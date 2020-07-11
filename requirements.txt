@@ -3,3 +3,5 @@ gunicorn
 django-heroku
 Image
 Pillow
+cloudinary
+dj3-cloudinary-storage
