@@ -78,8 +78,12 @@ WSGI_APPLICATION = "gettingstarted.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE" : "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3")
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "d27e5qolluid51",
+        "USER": "utjlrsauzkfjqj",
+        "PASSWORD": "830d862dbd305d892eee77ce804894685bcf22889708dc4d8306731aa7cb8b1c",
+        "HOST": "ec2-184-72-235-80.compute-1.amazonaws.com",
+        "PORT": "5432",
     }
 }
 
@@ -113,7 +117,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 django_heroku.settings(locals())
