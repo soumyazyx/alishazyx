@@ -10,7 +10,7 @@ class Category(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "categories"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return "{} - {}".format(self.name, self.desc)
@@ -22,6 +22,8 @@ class Product(models.Model):
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_desription = models.TextField(blank=True)
     product_image = models.ImageField(blank=True, upload_to="images/")
+    product_created_on = models.DateTimeField(auto_now_add=True)
+    product_last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Products"

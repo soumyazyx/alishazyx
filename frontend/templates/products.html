@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Soumya" />
-    <meta name="keyword" content="todo, tasks " />
-    <meta name="description" content="Most simple todo app!" />
+    <meta name="keyword" content="shopping" />
+    <meta name="description" content="shopping" />
     <title>alishazyx</title>
     <link
       rel="stylesheet"
@@ -69,52 +69,33 @@
   </head>
 
   <body>
+    <!-- hidden spans -->
+    <span id="categoryname">{{categoryname}}</span>
+    <!-- /hidden spans -->
     <div id="form-wrapper">
       <div class="container">
         <div class="row">
           <div class="col-12">
             <main>
-              <div id="categories-wrapper" class="continer-fluid"></div>
+              products 
+              {% for product in products %} 
+                <br>{{product.product_title}}
+                <br>{{product.product_description}} 
+                <br>{{product.product_sku}}
+                <br>{{product.product_category_id}} 
+                <br>{{product.product_category}}
+                <img src="{{product.product_image.url}}" />
+                <hr />
+              {% endfor %}
+              <div id="products-wrapper" class="continer-fluid">beep</div>
             </main>
           </div>
         </div>
       </div>
     </div>
-    <script>
-      var baseurl = window.location.origin;
-      function fetchCategories() {
-        var url = baseurl + "/api/categories/";
-        var wrapper = document.getElementById("categories-wrapper");
-        fetch(url)
-          .then((resp) => resp.json())
-          .then(function (categories) {
-            console.log(categories);
-            for (var index in categories) {
-              var category = categories[index];
-              var category_id = category.pk;
-              var name = category.fields.name;
-              var desc = category.fields.desc;
-              var created_on = category.fields.created_on;
-              var last_modified = category.fields.last_modified;
-              var href = baseurl + `/products/${name}`;
-              var item = `
-              <hr/>
-              <a href="${href}">
-                <br/>${category_id}
-                <br/>${name}
-                <br/>${desc}
-                <br/>${created_on}
-                <br/>${last_modified}
-              </a>`;
-              wrapper.innerHTML += item;
-            }
-          });
-      }
-    </script>
-
     <script type="text/javascript">
       $(document).ready(function () {
-        fetchCategories();
+        console.log("ready!")
       });
     </script>
   </body>

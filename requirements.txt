@@ -6,3 +6,4 @@ Pillow
 cloudinary
 dj3-cloudinary-storage
 djangorestframework
+json
