@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Soumya" />
+    <meta name="keyword" content="todo, tasks " />
+    <meta name="description" content="Most simple todo app!" />
+    <title>alishazyx</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+    <!-- 
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/solar/bootstrap.css"
+  />
+  -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+      @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
+      body {
+        background: rgba(114, 62, 40, 0.05);
+        font-family: "Work Sans", sans-serif;
+        font-size: 1.2rem;
+        /*background: #f4f6f9;*/
+        /*font-family: "Roboto Condensed", sans-serif;*/
+        /* font-family: "Varela Round", sans-serif; */
+      }
+      main {
+        max-width: 500px;
+        margin: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="form-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <main>
+              <div id="categories-wrapper" class="continer-fluid"></div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var baseurl = window.location.origin;
+      function fetchCategories() {
+        var url = baseurl + "/api/categories/";
+        var wrapper = document.getElementById("categories-wrapper");
+        fetch(url)
+          .then((resp) => resp.json())
+          .then(function (categories) {
+            console.log(categories);
+            for (var index in categories) {
+              var category = categories[index];
+              var category_id = category.pk;
+              var name = category.fields.name;
+              var desc = category.fields.desc;
+              var created_on = category.fields.created_on;
+              var last_modified = category.fields.last_modified;
+              var href = baseurl + `/api/products/${category_id}`;
+              var item = `
+              <hr/>
+              <a href="${href}">
+                <br/>${category_id}
+                <br/>${name}
+                <br/>${desc}
+                <br/>${created_on}
+                <br/>${last_modified}
+              </a>`;
+              wrapper.innerHTML += item;
+            }
+          });
+      }
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        fetchCategories();
+      });
+    </script>
+  </body>
+</html>
