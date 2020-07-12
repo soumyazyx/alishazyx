@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  {% include 'head.html' %}  
+
+  <body>
+    {% include 'navbar.html' %}  
+    <!-- <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active"><a href="#">Products</a></li>
+      </ol>
+    </nav> -->
+    <!-- hidden spans -->
+    <span id="categoryname">{{categoryname}}</span>
+    <!-- /hidden spans -->
+    <div id="form-wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <main>
+              {% for product in products %}
+              <div class="card" style="width: 18rem;">
+                <img
+                  class="card-img-top"
+                  src="{{product.product_image.url}}"
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+                  <p class="card-text">
+                    <br />{{product.product_title}}
+                    <br />{{product.product_description}}
+                    <br />{{product.product_sku}}
+                    <br />{{product.product_category_id}}
+                    <br />{{product.product_category}}
+                    <br />{{product.product_created_on}}
+                    <br />{{product.product_last_modified}}
+                  </p>
+                </div>
+              </div>
+              <!-- <img src="{{product.product_image.url}}" /> -->
+              <hr />
+              {% endfor %}
+              <div id="products-wrapper" class="continer-fluid">beep</div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        console.log("ready!");
+      });
+    </script>
+  </body>
+</html>

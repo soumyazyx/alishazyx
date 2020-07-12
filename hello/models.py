@@ -10,7 +10,7 @@ class Category(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "categories"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return "{} - {}".format(self.name, self.desc)
@@ -18,13 +18,17 @@ class Category(models.Model):
 
 class Product(models.Model):
     product_sku = models.CharField(max_length=255, blank=True, default="-1")
-    product_title = models.CharField(max_length=255, blank=False)
+    product_title = models.CharField(max_length=255, blank=False, unique=True)
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_desription = models.TextField(blank=True)
     product_image = models.ImageField(blank=True, upload_to="images/")
+    product_created_on = models.DateTimeField(auto_now_add=True)
+    product_last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Products"
 
     def __str__(self):
-        return "{} - {}".format(self.product_sku, self.product_title)
+        return "{} - {} - {}".format(
+            self.product_category, self.product_sku, self.product_title
+        )
