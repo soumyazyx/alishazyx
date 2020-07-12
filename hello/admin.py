@@ -1,7 +1,5 @@
 from django.contrib import admin
-from hello.models import imggal, Greeting
+from hello.models import Product, Category
 
-# Register your models here.
-
-admin.site.register(imggal)
-admin.site.register(Greeting)
+admin.site.register(Product)
+admin.site.register(Category)

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-  {% for results in imggal %}
+  {% for results in products %}
     {{results.imgtitle}}
     {{results.imgdesc}}
     <img src="{{results.image.url}}">
