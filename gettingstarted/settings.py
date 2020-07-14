@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "frontend",
     "cloudinary_storage",
     "cloudinary",
+    "django_cleanup",
 ]
 
 MIDDLEWARE = [
