@@ -1,16 +1,16 @@
 import json
 
 from django.core import serializers
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
-from hello.models import Category, Product
+from hello.models import Category, Product, ProductImage
 
 
 def index(request):
     return render(request, "index.html")
 
 
-def show_products(request, categoryname):
+def product_view(request, categoryname):
     # get category id from category name
     category_qs = Category.objects.filter(name__iexact=categoryname)
     # Check if we have any product/s for the given category
@@ -22,3 +22,10 @@ def show_products(request, categoryname):
         return render(request, "products.html", {"products": products})
     else:
         return render(request, "products.html")
+
+
+def detail_view(request, categoryname, id):
+    product = get_object_or_404(Product, id=id)
+    photos = ProductImage.objects.filter(product=product)
+    return render(request, "details.html", {"product": product, "photos": photos})
+

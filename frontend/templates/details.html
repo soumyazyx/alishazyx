@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    {{product}} {{photos}}
+    <br />{{product.product_title}} 
+    <br />{{product.product_description}}
+    <br />{{product.product_sku}} 
+    <br />{{product.product_category_id}}
+    <br />{{product.product_category}} 
+    <br />{{product.product_created_on}}
+    <br />{{product.product_last_modified}}
+    <img src="{{product.product_image.url}}" />
+    {% for photo in photos %}
+      <img src="{{photo.image.url}}" />
+    {% endfor %}
+  </body>
+</html>
