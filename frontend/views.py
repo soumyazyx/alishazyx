@@ -29,3 +29,6 @@ def detail_view(request, categoryname, id):
     photos = ProductImage.objects.filter(product=product)
     return render(request, "details.html", {"product": product, "photos": photos})
 
+
+def fashi(request):
+    return render(request, "frontend/index_fashi.html")
