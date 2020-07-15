@@ -7,7 +7,7 @@ from hello.models import Category, Product, ProductImage
 
 
 def index(request):
-    return render(request, "index.html")
+    return render(request, "frontend/index.html")
 
 
 def product_view(request, categoryname):
