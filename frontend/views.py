@@ -7,7 +7,10 @@ from hello.models import Category, Product, ProductImage
 
 
 def index(request):
-    return render(request, "frontend/index.html")
+    # get all categories
+    category_qs = Category.objects.all()
+    # category_json = json.load(serializers.serialize("json", category_qs))
+    return render(request, "frontend/index.html", {"categories": category_qs})
 
 
 def product_view(request, categoryname):

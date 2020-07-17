@@ -3,9 +3,9 @@ from django.utils import timezone
 
 
 class Category(models.Model):
-    # id = models.AutoField(primary_key=True) - added automatically
     name = models.CharField(max_length=255, blank=False)
     desc = models.TextField(blank=True)
+    image = models.ImageField(blank=True, upload_to="images/categories/")
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
