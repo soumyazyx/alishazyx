@@ -13,13 +13,13 @@
   {% endfor %}
 
   {% for product in products %}
-    {{product.product_title}}
-    {{product.product_description}}
-    {{product.product_sku}}
-    {{product.product_category_id}}
-    {{product.product_category}}
+    {{product.title}}
+    {{product.description}}
+    {{product.sku}}
+    {{product.category_id}}
+    {{product.category}}
 
-    <img src="{{product.product_image.url}}">
+    <img src="{{product.image.url}}">
     <hr> 
   {% endfor %}
 {% endblock %}

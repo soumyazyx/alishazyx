@@ -4,5 +4,15 @@
 .product-large {
   height: 350px;
   padding-top: 250px;
-  /* margin: 1px; */
+  margin: 1px;
+}
+
+.product-item {
+  border: 1px solid #eee;
+}
+
+.product-item .pi-pic img {
+  height: 400px;
+  object-fit: cover;
+  object-position: top;
 }
