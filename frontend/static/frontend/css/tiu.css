@@ -1,0 +1,10 @@
+/*---------------------
+ Banner Section
+-----------------------*/
+.product-large {
+  height: 350px;
+  margin-left: -15px;
+  margin-right: -15px;
+  text-align: center;
+  padding-top: 250px;
+}
