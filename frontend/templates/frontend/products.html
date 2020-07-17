@@ -60,27 +60,7 @@
             </div>
         </div>
     </div>
-    <!-- Banner Section Begin -->
-    <section class="banner-section spad">
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                {% for product in products %}
-                    {% if forloop.first%}
-                        <div class="col-lg-3">
-                    {% else %}
-                        <div class="col-lg-3 offset-lg-1">
-                    {% endif %}
-                    <a href="/products/{{category}}">
-                    <div class="product-large set-bg" data-setbg="{{product.image.url}}">
-                        <h2>{{product.title}}</h2>
-                    </div>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-    <!-- Banner Section End -->
+
     <div class="product-list">
       <div class="row justify-content-center">
         {% for product in products %}
