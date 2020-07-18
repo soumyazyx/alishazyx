@@ -7,8 +7,12 @@
   margin: 1px;
 }
 
+.product-list {
+  background: #eee;
+}
 .product-item {
-  border: 1px solid #eee;
+  /* border: 1px solid #ddd; */
+  background: white;
 }
 
 .product-item .pi-pic img {
@@ -22,7 +26,8 @@
 }
 
 .pi-pic img {
-  border: 2px solid #f2c56d;
+  /* border: 2px solid #f2c56d; */
+  border: 1px solid #eee;
 }
 .pi-text {
   padding: 5px;
