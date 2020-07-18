@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'frontend/css/themify-icons.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'frontend/css/elegant-icons.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'frontend/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" type="text/css">
     <link rel="stylesheet" href="{% static 'frontend/css/nice-select.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'frontend/css/jquery-ui.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'frontend/css/slicknav.min.css' %}" type="text/css">
@@ -73,20 +74,13 @@
       <div class="row justify-content-center">
         {% for product_id, details in products_details.items %}
         <div class="col-lg-4 col-sm-6">
-          <div class="product-item">
+          <div class="product-item shadow">
             <div class="pi-pic">
-              {% if details.images|length == 1 %}
-                {% for image in details.images %}
-                  <img src="{{image}}" alt="">  
-                {% endfor %}
-              {% else %}
-                <div class="owl-carousel owl-theme">
-                {% for image in details.images %}
-                  <img src="{{image}}" alt="">  
-                {% endfor %}
-                </div>
-              {% endif %}
-                
+              <div class="owl-carousel owl-theme">
+              {% for image in details.images %}
+                <img src="{{image}}" alt="">  
+              {% endfor %}
+              </div>  
             </div>
             <div class="pi-text">
               <div class="product-price">
@@ -148,7 +142,7 @@
         margin: 10,
         loop: false,
         items: 1,
-        stagePadding: 30
+        // stagePadding: 30
       });
     });
     

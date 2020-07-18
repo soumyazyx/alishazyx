@@ -8,11 +8,11 @@
 }
 
 .product-list {
-  background: #eee;
+  /* background: #eee; */
 }
 .product-item {
   /* border: 1px solid #ddd; */
-  background: white;
+  /* background: white; */
 }
 
 .product-item .pi-pic img {
@@ -21,13 +21,9 @@
   object-position: center;
 }
 
-.owl-stage {
-  padding-left: 0px !important;
-}
-
 .pi-pic img {
   /* border: 2px solid #f2c56d; */
-  border: 1px solid #eee;
+  /* border: 1px solid #eee; */
 }
 .pi-text {
   padding: 5px;
@@ -35,4 +31,9 @@
 
 .pi-text h5 {
   text-align: left;
+}
+
+.breadcrumb-text {
+  padding-bottom: 5px;
+  border: none;
 }
