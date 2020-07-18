@@ -34,13 +34,7 @@
 {% comment %} 
 {% for product_id, details in products_details.items %}
   <hr>
-  <br>{{product_id}}
-  <br>{{details}}
-  <br>{{details.sku}}
-  <br>{{details.category}}
-  <br>{{details.description}}
-  <br>{{details.created_on}}
-  <br>{{details.last_modified}}
+  
   <br>Image Count:---- {{details.images|length}} ----
   {% for image in details.images %}
     <br>{{image}}
@@ -91,22 +85,23 @@
                 {% endfor %}
                 </div>
               {% endif %}
-                <!--
-                <img src="{{product.image.url}}" alt="">  
-                <img src="{% static 'frontend/img/products/man-1.jpg' %}" alt="">
-                <img src="{% static 'frontend/img/products/man-2.jpg' %}" alt="">
-                <img src="{% static 'frontend/img/products/man-3.jpg' %}" alt="">
-                <img src="{% static 'frontend/img/products/product-1.jpg' %}" alt="">
-                -->
-              
+                
             </div>
             <div class="pi-text">
-              <a href="#">    
-                <h5>{{details.title}}</h5>
-              </a>
               <div class="product-price">
-                {{details.description}}
+                {{details.title}}
               </div>
+                <h5 class="text-muted">{{details.description}}</h5>
+                <!--
+                <br>{{product_id}}
+                <br>{{details}}
+                <br>{{details.sku}}
+                <br>{{details.category}}
+                <br>{{details.description}}
+                <br>{{details.created_on}}
+                <br>{{details.last_modified}}
+                -->
+              
             </div>
           </div>
         </div>
@@ -150,7 +145,7 @@
     $(function() {
       $('.owl-carousel').owlCarousel({
         margin: 10,
-        loop: true,
+        loop: false,
         items: 1,
         stagePadding: 30
       });

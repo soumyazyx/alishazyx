@@ -21,7 +21,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255, blank=False, unique=True)
     image = models.ImageField(blank=True, upload_to="images/products/")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 

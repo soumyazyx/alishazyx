@@ -13,10 +13,21 @@
 
 .product-item .pi-pic img {
   height: 400px;
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
+  object-position: center;
 }
 
 .owl-stage {
   padding-left: 0px !important;
+}
+
+.pi-pic img {
+  border: 2px solid #f2c56d;
+}
+.pi-text {
+  padding: 5px;
+}
+
+.pi-text h5 {
+  text-align: left;
 }
