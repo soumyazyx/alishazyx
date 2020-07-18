@@ -57,24 +57,13 @@
             </div>
         </div>
     </header>
-    <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <a href="/"><i class="fa fa-home"></i> Home</a>
-                        <span>{{category}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <div class="product-list">
-      <div class="row justify-content-center">
+      <div class="container">
+      <div class="row">
+      
         {% for product_id, details in products_details.items %}
         <div class="col-lg-4 col-sm-6">
-          <div class="product-item shadow">
+          <div class="product-item">
             <div class="pi-pic">
               <div class="owl-carousel owl-theme">
               {% for image in details.images %}
@@ -86,7 +75,9 @@
               <div class="product-price">
                 {{details.title}}
               </div>
-                <h5 class="text-muted">{{details.description}}</h5>
+              <div class="product-desc text-muted">
+                {{details.description|linebreaksbr}}
+              </div>
                 <!--
                 <br>{{product_id}}
                 <br>{{details}}
@@ -101,6 +92,7 @@
           </div>
         </div>
         {% endfor %}
+      </div>      
       </div>      
     </div>
     
