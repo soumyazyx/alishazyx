@@ -3,15 +3,16 @@
 -----------------------*/
 .category-name {
   text-shadow: 2px 2px #000;
-  background: radial-gradient(gray, transparent);
+  /* background: radial-gradient(gray, transparent); */
 }
 
 .category-name h2 {
   font-size: 2rem;
+  background: rgba(200, 200, 200, 0.3);
 }
 .product-large {
   height: 350px;
-  /* padding-top: 200px; */
+  padding-top: 305px;
   margin: 1px;
 }
 
