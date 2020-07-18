@@ -30,9 +30,23 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-
     <!-- Header Section Begin -->
-    
+{% comment %} 
+{% for product_id, details in products_details.items %}
+  <hr>
+  <br>{{product_id}}
+  <br>{{details}}
+  <br>{{details.sku}}
+  <br>{{details.category}}
+  <br>{{details.description}}
+  <br>{{details.created_on}}
+  <br>{{details.last_modified}}
+  <br>Image Count:---- {{details.images|length}} ----
+  {% for image in details.images %}
+    <br>{{image}}
+  {% endfor %}
+{% endfor %} {% endcomment %}
+
     <header class="header-section">
         <div class="container">
             <div class="inner-header">
@@ -53,39 +67,45 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <a href="#"><i class="fa fa-home"></i> Home</a>
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
                         <span>{{category}}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="product-list">
       <div class="row justify-content-center">
-        {% for product in products %}
+        {% for product_id, details in products_details.items %}
         <div class="col-lg-4 col-sm-6">
           <div class="product-item">
             <div class="pi-pic">
-              <img src="{{product.image.url}}" alt="">
-              <div class="sale pp-sale">Sale</div>
-              <div class="icon">
-                <i class="icon_heart_alt"></i>
-              </div>
-              <ul>
-                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-              </ul>
+              {% if details.images|length == 1 %}
+                {% for image in details.images %}
+                  <img src="{{image}}" alt="">  
+                {% endfor %}
+              {% else %}
+                <div class="owl-carousel owl-theme">
+                {% for image in details.images %}
+                  <img src="{{image}}" alt="">  
+                {% endfor %}
+                </div>
+              {% endif %}
+                <!--
+                <img src="{{product.image.url}}" alt="">  
+                <img src="{% static 'frontend/img/products/man-1.jpg' %}" alt="">
+                <img src="{% static 'frontend/img/products/man-2.jpg' %}" alt="">
+                <img src="{% static 'frontend/img/products/man-3.jpg' %}" alt="">
+                <img src="{% static 'frontend/img/products/product-1.jpg' %}" alt="">
+                -->
+              
             </div>
             <div class="pi-text">
-              <div class="catagory-name">Towel</div>
-                <a href="#">    
-                  <h5>Pure Pineapple</h5>
-                </a>
+              <a href="#">    
+                <h5>{{details.title}}</h5>
+              </a>
               <div class="product-price">
-                $14.00
-                <span>$35.00</span>
+                {{details.description}}
               </div>
             </div>
           </div>
@@ -93,6 +113,7 @@
         {% endfor %}
       </div>
     </div>
+    
     <!-- Footer Section Begin -->
     <!--
     <footer class="footer-section" style="padding:0">
@@ -125,6 +146,17 @@
     <script src="{% static 'frontend/js/jquery.slicknav.js' %}"></script>
     <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'frontend/js/main.js' %}"></script>
+    <script>
+    $(function() {
+      $('.owl-carousel').owlCarousel({
+        margin: 10,
+        loop: true,
+        items: 1,
+        stagePadding: 30
+      });
+    });
+    
+    </script>
 </body>
 
 </html>

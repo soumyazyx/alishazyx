@@ -21,7 +21,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255, blank=False, unique=True)
     image = models.ImageField(blank=True, upload_to="images/products/")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    desription = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=255, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
@@ -37,4 +37,4 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to="images/products/")
 
     def __str__(self):
-        return self.product.product_title
+        return self.product.title
