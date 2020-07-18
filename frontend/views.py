@@ -8,7 +8,7 @@ from hello.models import Category, Product, ProductImage
 
 def index(request):
     # get all categories
-    category_qs = Category.objects.all()
+    category_qs = Category.objects.all().order_by("id")
     # category_json = json.load(serializers.serialize("json", category_qs))
     return render(request, "frontend/index.html", {"categories": category_qs})
 
@@ -16,7 +16,7 @@ def index(request):
 def product_view(request, categoryname):
     products_details = {}
     category = get_object_or_404(Category, name=categoryname)
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=category).order_by("id")
     for product in products:
         products_details[product.id] = {}
         products_details[product.id]["sku"] = product.sku
@@ -35,7 +35,7 @@ def product_view(request, categoryname):
     )
 
 
-def detail_view(request, categoryname, id):
+def detail_view(request, id):
     product = get_object_or_404(Product, id=id)
     photos = ProductImage.objects.filter(product=product)
     return render(request, "details.html", {"product": product, "photos": photos})
