@@ -6,16 +6,20 @@
     {% include 'frontend/header_section.html' %}
     <!-- Banner Section Begin -->
     <section class="">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           {% for category in categories %}
-            <div class="col-lg-4">  
-              <a href="/products/{{category.name}}">
-                <div class="product-large set-bg" data-setbg="{{category.image.url}}">
-                  <span class="category-name"><h2>{{category.name}}</h2></span>
-                </div>
-              </a>
-            </div>
+            {% if forloop.first%}
+              <div class="col-lg-3">
+            {% else %}
+              <div class="col-lg-3 offset-lg-1">
+            {% endif %}
+                <a href="/products/{{category.name}}">
+                  <div class="product-large set-bg" data-setbg="{{category.image.url}}">
+                    <h2>{{category.name}}</h2>
+                  </div>
+                </a>
+              </div>
           {% endfor %}
         </div>
       </div>

@@ -1,9 +1,12 @@
 /*---------------------
  Banner Section
 -----------------------*/
+.category-name {
+  text-shadow: 2px 2px #000;
+}
 .product-large {
   height: 350px;
-  padding-top: 250px;
+  padding-top: 200px;
   margin: 1px;
 }
 
