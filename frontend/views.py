@@ -8,7 +8,7 @@ from hello.models import Category, Product, ProductImage
 
 def index(request):
     # get all categories
-    category_qs = Category.objects.all().order_by("id")
+    category_qs = Category.objects.all()
     # category_json = json.load(serializers.serialize("json", category_qs))
     return render(request, "frontend/index.html", {"categories": category_qs})
 
