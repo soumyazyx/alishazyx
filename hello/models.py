@@ -6,14 +6,16 @@ class Category(models.Model):
     name = models.CharField(max_length=255, blank=False)
     desc = models.TextField(blank=True)
     image = models.ImageField(blank=True, upload_to="images/categories/")
+    sequence = models.IntegerField(blank=False, default=999)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ("sequence", "created_on")
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "{}. {}".format(self.sequence, self.name)
 
 
 class Product(models.Model):
