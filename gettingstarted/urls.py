@@ -10,6 +10,7 @@ import hello.views
 urlpatterns = [
     path("", include("frontend.urls")),
     path("api/", include("hello.urls")),
+    path("bot/", include("bot.urls")),
     path("admin/", admin.site.urls),
 ]
 
