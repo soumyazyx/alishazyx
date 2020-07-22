@@ -11,7 +11,6 @@ def dummy(request):
 
     name = request.POST.get("Body", "")
     msg = "Hey %s, how are you today?" % (name)
-    msg = os.environ["TIU"]
     r = MessagingResponse()
     r.message(msg)
     return r
