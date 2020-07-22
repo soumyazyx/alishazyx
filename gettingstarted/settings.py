@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "cloudinary",
     "django_cleanup",
+    "django_twilio",
 ]
 
 MIDDLEWARE = [
@@ -135,5 +136,8 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": "uwUTNO9gdvkWbyDH7twPe5hFB2k",
 }
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+TWILIO_ACCOUNT_SID = "ACb1b6171834a4de554bd3f43d8488b969"
+TWILIO_AUTH_TOKEN = "0a6af65ef508461ae9b15c837229e4a4"
 
 django_heroku.settings(locals())
+

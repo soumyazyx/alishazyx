@@ -8,3 +8,4 @@ dj3-cloudinary-storage
 djangorestframework
 django_cleanup
 twilio
+django_twilio
