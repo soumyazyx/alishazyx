@@ -5,8 +5,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core import serializers
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def apiOverview(request):
     api_urls = {
         "Categories": "/categories/",
