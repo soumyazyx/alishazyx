@@ -5,4 +5,5 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def dummy(request):
-    return HttpResponse("hi there!")
+    twiml = "<Response><Message>Hello from your Django app!</Message></Response>"
+    return HttpResponse(twiml, content_type="text/xml")
