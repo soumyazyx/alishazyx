@@ -9,4 +9,3 @@ djangorestframework
 django_cleanup
 twilio
 django_twilio
-urllib
