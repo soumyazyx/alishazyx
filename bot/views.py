@@ -28,6 +28,9 @@ def dummy(request):
     print(MediaUrl0)
     print("---")
     if MediaUrl0:
+        opener = urllib.request.build_opener()
+        opener.addheaders = [("User-agent", "Mozilla/5.0")]
+        urllib.request.install_opener(opener)
         result = urllib.request.urlretrieve(MediaUrl0)
         reopen = open(result[0], "rb")
         django_file = File(reopen)
