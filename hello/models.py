@@ -40,3 +40,7 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.product.title
+
+
+class DemoImage(models.Model):
+    image = models.ImageField(blank=True, upload_to="images/DemoImages/")

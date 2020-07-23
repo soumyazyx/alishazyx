@@ -6,13 +6,20 @@ import json
 
 @twilio_view
 def dummy(request):
+    # json_data = json.loads(request.body.decode(encoding="UTF-8"))
+    # print("Raw Data : %s" % json_data)
     # r = MessagingResponse()
     # r.message("Thanks for the SMS message!")
     # return r
     # print("TIU1")
     # print(">>>>")
-    # body_unicode = request.body.decode("utf-8")
-    # print(body_unicode)
+
+    body_unicode = request.body.decode("utf-8")
+    print(request)
+    print(request.body)
+    print(body_unicode)
+    print(request.POST)
+    print(request.POST.get("Body"))
     # print(">>>>")
     # body = json.loads(body_unicode)
     # print(body)
@@ -37,7 +44,7 @@ def dummy(request):
 
     name = request.POST.get("Body", "")
     msg = "%s" % (name)
-
+    print(msg)
     r = MessagingResponse()
     r.message(msg)
     return r
