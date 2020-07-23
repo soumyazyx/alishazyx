@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "CHANGE_ME!!!! (P.S. the SECRET_KEY environment variable will be used, if set, instead)."
-SECRET_KEY = "#t79p^gzq(t13jj-3uec1_wu13%uzkyvlz!9cab@8njhe=8@m6"
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -136,8 +136,7 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": "uwUTNO9gdvkWbyDH7twPe5hFB2k",
 }
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-TWILIO_ACCOUNT_SID = "ACb1b6171834a4de554bd3f43d8488b969"
-TWILIO_AUTH_TOKEN = "0a6af65ef508461ae9b15c837229e4a4"
+TWILIO_ACCOUNT_SID = os.environ["TWILIO_ACCOUNT_SID"]
+TWILIO_AUTH_TOKEN = os.environ["TWILIO_AUTH_TOKEN"]
 
 django_heroku.settings(locals())
-
