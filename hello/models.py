@@ -43,4 +43,5 @@ class ProductImage(models.Model):
 
 
 class DemoImage(models.Model):
-    image = models.ImageField(blank=True, upload_to="images/DemoImages/")
+    title = models.TextField(max_length=255, blank=False)
+    image = models.ImageField(blank=False, upload_to="images/DemoImages/")
