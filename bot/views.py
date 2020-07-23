@@ -54,7 +54,8 @@ def dummy(request):
     # print(body_json)
 
     name = request.POST.get("Body", "")
-    msg = "%s" % (name)
+    sid = request.POST.get("MessageSid", "")
+    msg = "{} - {}".format(sid, name)
     print(msg)
     r = MessagingResponse()
     r.message(msg)
