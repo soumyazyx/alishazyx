@@ -26,9 +26,11 @@ def dummy(request):
         request.POST
     )  # <QueryDict: {'MediaContentType0': ['image/jpeg'], 'SmsMessageSid': ['MM33a247a129f11937eccd9b170ad9965e'], 'NumMedia': ['1'], 'SmsSid': ['MM33a247a129f11937eccd9b170ad9965e'], 'SmsStatus': ['received'], 'Body': [''], 'To': ['whatsapp:+14155238886'], 'NumSegments': ['1'], 'MessageSid': ['MM33a247a129f11937eccd9b170ad9965e'], 'AccountSid': ['ACb1b6171834a4de554bd3f43d8488b969'], 'From': ['whatsapp:+919553884727'], 'MediaUrl0': ['https://api.twilio.com/2010-04-01/Accounts/ACb1b6171834a4de554bd3f43d8488b969/Messages/MM33a247a129f11937eccd9b170ad9965e/Media/ME89dec689478af38927f9c5ffd1e87a32'], 'ApiVersion': ['2010-04-01']}>
     print("\nTIU-BODY")
-    print(request.POST.get("Body"))
+    print(request.POST.get("Body", ""))
+    print("\nTIU-MessageSid")
+    print(request.POST.get("MessageSid", ""))
     print("\nTIU-MediaUrl0")
-    print(request.POST.get("MediaUrl0"))
+    print(request.POST.get("MediaUrl0", ""))
     # print(">>>>")
     # body = json.loads(body_unicode)
     # print(body)
