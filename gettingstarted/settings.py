@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "hello",
     "frontend",
+    "bot",
     "cloudinary_storage",
     "cloudinary",
     "django_cleanup",
