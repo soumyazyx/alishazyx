@@ -23,16 +23,6 @@ from bot.models import TelegramMessage
 from hello.models import Category, DemoImage
 
 
-class ResponseThen(Response):
-    def __init__(self, data, then_callback, **kwargs):
-        super().__init__(data, **kwargs)
-        self.then_callback = then_callback
-
-    def close(self):
-        super().close()
-        self.then_callback()
-
-
 def scan(request):
     scan_messages()
     return HttpResponse("ok", status=status.HTTP_200_OK)
@@ -66,28 +56,3 @@ def telegram_handler(request):
     elif text.lower() == "endzyx":
         scan_messages()
     return HttpResponse("ok", status=200)
-
-
-@csrf_exempt
-def telegram_handler_e(request):
-
-    # ...code to run before response is returned to client
-    print("Message received from telegram..")
-    received_json_data = json.loads(request.body)
-    print("Saving message to DB..")
-    save_telegram_message_res = save_telegram_message(received_json_data)
-    if save_telegram_message_res == -1:
-        print("Saving message to DB..FAILED!")
-        # return HttpResponse(status=400)
-    else:
-        print("Saving message to DB..Done [id={}]".format(
-            save_telegram_message_res))
-        # return HttpResponse("ok", status=200)
-
-    # ..code to run *after* response is returned to client
-    def do_after():
-        print("...code to run *after* response is returned to client")
-        time.sleep(20)
-        print("yay!")
-
-    return ResponseThen("some_data", do_after, status=status.HTTP_200_OK)
