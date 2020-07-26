@@ -46,7 +46,6 @@ def telegram_handler(request):
     body_json = json.loads(message)
     update_id = body_json["update_id"]
     chat_id = body_json["message"]["chat"]["id"]
-    # send_message(chat_id, "hi")
     if "text" in body_json["message"]:
         text = body_json["message"]["text"]
     else:
