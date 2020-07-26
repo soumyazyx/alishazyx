@@ -40,6 +40,7 @@ def telegram_handler(request):
     message = request.body.decode("utf-8")
     body_json = json.loads(message)
     update_id = body_json["update_id"]
+    print(update_id)
     if "text" in body_json["message"]:
         text = body_json["message"]["text"]
     else:
@@ -84,3 +85,60 @@ def telegram_handler_e(request):
         print("yay!")
 
     return ResponseThen("some_data", do_after, status=status.HTTP_200_OK)
+
+
+@twilio_view
+def handler(request):
+    print("wow")
+    get_categories()
+    msg = request.POST.get("Body", "")
+    r = MessagingResponse()
+    r.message(msg)
+    return r
+
+
+@twilio_view
+def dummy(request):
+
+    # url = "https://upload.wikimedia.org/wikipedia/commons/b/b1/John_Leak_P02939.jpg"
+    # result = urllib.request.urlretrieve(url)
+    # reopen = open(result[0], "rb")
+    # django_file = File(reopen)
+    # demoimg = DemoImage()
+    # demoimg.title = "title"
+    # demoimg.image.save("logo.png", django_file, save=True)
+
+    name = request.POST.get("Body", "")
+    sid = request.POST.get("MessageSid", "")
+    print("TIU-SID")
+    print(sid)
+    MediaUrl0 = request.POST.get("MediaUrl0")
+    print("TIU-MediaUrl0")
+    print(MediaUrl0)
+    print("---")
+    if MediaUrl0:
+        opener = urllib.request.build_opener()
+        opener.addheaders = [("User-agent", "Mozilla/5.0")]
+        urllib.request.install_opener(opener)
+        result = urllib.request.urlretrieve(MediaUrl0)
+        reopen = open(result[0], "rb")
+        django_file = File(reopen)
+        demoimg = DemoImage()
+        demoimg.title = "title"
+        demoimg.image.save("logo.png", django_file, save=True)
+    else:
+        print("No media")
+    msg = "{} - {}".format(sid, name)
+    r = MessagingResponse()
+    r.message(msg)
+    return r
+
+
+def get_categories():
+    print("get categories")
+    categories = Category.objects.all()
+    print(categories)
+    for category in categories:
+        print(category.id)
+        print(category.sequence)
+        print(category.name)
