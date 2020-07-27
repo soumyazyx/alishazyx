@@ -5,7 +5,7 @@ import urllib.request
 
 import requests
 from django.core.files import File
-
+from django.views.decorators.csrf import csrf_exempt
 from bot.models import TelegramMessage
 from hello.models import Product, Category, ProductImage
 
@@ -16,24 +16,13 @@ bot_token = os.environ["BOT_TOKEN"]
 default_photo_url = "https://res.cloudinary.com/hxjbk5wno/image/upload/v1594845942/logo_alisha_min_vra4dr.png"
 default_category_id = 17  # Category 'Whatever' has id=17
 
-def save_telegram_message(body_json):
+
+def save_telegram_message(update_id, json_msg):
+
     try:
-        # Extract the necessary info from json
-        update_id = body_json["update_id"]
-        chat_id = body_json["message"]["chat"]["id"]
-        first_name = body_json["message"]["chat"]["first_name"]
-        # 'text' key doesn't exist if it the message is an image/video/animation
-        text = ""
-        if "text" in body_json["message"]:
-            text = body_json["message"]["text"]
-        # Attempt to insert only if update_id doesn't exist already
-        if TelegramMessage.objects.filter(update_id=update_id).exists():
-            print("update_id[{}] already exists!".format(update_id))
-            return update_id
-        # We are all good. Atempt to insert the record
         telegram_msg = TelegramMessage(update_id=update_id, json_msg=json_msg)
         telegram_msg.save()
-        return update_id
+        return telegram_msg.id
     except Exception as e:
         print("Failed to save telegram message: " + str(e))
         return -1
