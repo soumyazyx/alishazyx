@@ -29,7 +29,6 @@ def product_view(request, categoryname):
         photos_qs = ProductImage.objects.filter(product=product)
         for photo in photos_qs:
             products_details[product.id]["images"].append(photo.image.url)
-    print(products_details)
     return render(
         request, "frontend/products.html", {"products_details": products_details},
     )
@@ -43,3 +42,4 @@ def detail_view(request, id):
 
 def fashi(request):
     return render(request, "frontend/index_fashi.html")
+
