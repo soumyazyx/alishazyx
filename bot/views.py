@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import threading
 import time
 import urllib.request
 
@@ -9,12 +10,8 @@ from django.core.files import File
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_twilio.decorators import twilio_view
-from lib.bot.bot_utils import (
-    save_telegram_message,
-    scan_messages,
-    send_message,
-    get_categories,
-)
+from lib.bot.bot_utils import (get_categories, save_telegram_message,
+                               scan_messages, send_message)
 from rest_framework import status
 from rest_framework.response import Response
 from twilio.twiml.messaging_response import MessagingResponse
@@ -41,51 +38,34 @@ def scan(request):
 @csrf_exempt
 def telegram_handler(request):
 
-    print("Message received from telegram..")
-    message = request.body.decode("utf-8")
+    print("Telegram message received")
+    # Extract details from message
+    message    = request.body.decode("utf-8")
+    body_json  = json.loads(message)
+    chat_id    = body_json["message"]["chat"]["id"]
+    first_name = body_json["message"]["chat"]["first_name"]
+    # Save message to DB
+    save_telegram_message_res = save_telegram_message(message=message)
+    if save_telegram_message_res == -1:
+        return HttpResponse(status=400)
+    else:
+        thread_respond = threading.Thread(target=respond, args=(message,)); thread_respond.start()
+        return HttpResponse(status=200)
+    
+
+def respond(message):
     body_json = json.loads(message)
-    update_id = body_json["update_id"]
-    chat_id = body_json["message"]["chat"]["id"]
+    chat_id   = body_json["message"]["chat"]["id"]
+    # Extract text provided the incoming message is a text message        
     if "text" in body_json["message"]:
         text = body_json["message"]["text"]
     else:
         text = ""
-    print("Saving message to DB..")
-    save_telegram_message_res = save_telegram_message(
-        json_msg=message, update_id=update_id
-    )
-    if save_telegram_message_res == -1:
-        print("Saving message to DB..FAILED!")
-        return HttpResponse(status=400)
-    else:
-        print("Saving message to DB..Done [id={}]".format(save_telegram_message_res))
-
+    
     if text.lower() == "startzyx":
         send_message(chat_id, get_categories())
     elif text.lower() == "endzyx":
         scan_messages()
-    return HttpResponse("ok", status=200)
-
-
-@csrf_exempt
-def telegram_handler_e(request):
-
-    # ...code to run before response is returned to client
-    print("Message received from telegram..")
-    received_json_data = json.loads(request.body)
-    print("Saving message to DB..")
-    save_telegram_message_res = save_telegram_message(received_json_data)
-    if save_telegram_message_res == -1:
-        print("Saving message to DB..FAILED!")
-        # return HttpResponse(status=400)
-    else:
-        print("Saving message to DB..Done [id={}]".format(save_telegram_message_res))
-        # return HttpResponse("ok", status=200)
-
-    # ..code to run *after* response is returned to client
-    def do_after():
-        print("...code to run *after* response is returned to client")
-        time.sleep(20)
-        print("yay!")
-
-    return ResponseThen("some_data", do_after, status=status.HTTP_200_OK)
+    
+        
+    
