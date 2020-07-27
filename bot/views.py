@@ -31,26 +31,20 @@ def scan(request):
 @csrf_exempt
 def telegram_handler(request):
 
-    print("Message received from telegram..")
+    print("New message received from telegram..")
     message = request.body.decode("utf-8")
     body_json = json.loads(message)
-    update_id = body_json["update_id"]
-    chat_id = body_json["message"]["chat"]["id"]
-    if "text" in body_json["message"]:
-        text = body_json["message"]["text"]
-    else:
-        text = ""
+
+    # Insert new telegram message to DB
     print("Saving message to DB..")
-    save_telegram_message_res = save_telegram_message(
-        json_msg=message, update_id=update_id
-    )
-    if save_telegram_message_res == -1:
+    save_msg_res = save_telegram_message(body_json=body_json)
+    if save_msg_res == -1:
         print("Saving message to DB..FAILED!")
         return HttpResponse(status=400)
     else:
-        print("Saving message to DB..Done [id={}]".format(
-            save_telegram_message_res))
+        print("Saving message to DB..Done [update_id={}]".format(save_msg_res))
 
+    # Handle start and end marker responses
     if text.lower() == "startzyx":
         send_message(chat_id, get_categories())
     elif text.lower() == "endzyx":

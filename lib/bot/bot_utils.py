@@ -16,13 +16,24 @@ bot_token = os.environ["BOT_TOKEN"]
 default_photo_url = "https://res.cloudinary.com/hxjbk5wno/image/upload/v1594845942/logo_alisha_min_vra4dr.png"
 default_category_id = 17  # Category 'Whatever' has id=17
 
-
-def save_telegram_message(update_id, json_msg):
-
+def save_telegram_message(body_json):
     try:
+        # Extract the necessary info from json
+        update_id = body_json["update_id"]
+        chat_id = body_json["message"]["chat"]["id"]
+        first_name = body_json["message"]["chat"]["first_name"]
+        # 'text' key doesn't exist if it the message is an image/video/animation
+        text = ""
+        if "text" in body_json["message"]:
+            text = body_json["message"]["text"]
+        # Attempt to insert only if update_id doesn't exist already
+        if TelegramMessage.objects.filter(update_id=update_id).exists():
+            print("update_id[{}] already exists!".format(update_id))
+            return update_id
+        # We are all good. Atempt to insert the record
         telegram_msg = TelegramMessage(update_id=update_id, json_msg=json_msg)
         telegram_msg.save()
-        return telegram_msg.id
+        return update_id
     except Exception as e:
         print("Failed to save telegram message: " + str(e))
         return -1
@@ -53,7 +64,7 @@ def scan_messages():
 
 def split_msges_to_blocks(telegram_msges_qs):
     """Takes in ALL the messages and splits into blocks
-    Each block starts with 'startzyx' and ends with 'endzyx' 
+    Each block starts with 'startzyx' and ends with 'endzyx'
     startzyx & endzyx behave as markers here
     """
 
@@ -147,13 +158,13 @@ def compute_title_desc(all_blocks):
                 # We found the line. Ex. Catalog Name: blah blah blah
                 # Strip off the 'Catalog Name' so that we end up with 'blah blah blah' as title
                 # Using regex substitution to do so - substitute 'Catalog Name' with ''
-                title = re.sub(r"Catalog\s*Name:?", "",
-                               line, flags=re.IGNORECASE)
+                title = re.sub(r"Catalog\s*Name:?", "", line, flags=re.IGNORECASE)
                 title = re.sub(r"^\*", "", title)
                 title = re.sub(r"\s*\*\s*$", "", title)
             if re.search(r"^\s*Category\s*=\s*\d+\s*$", line, re.IGNORECASE):
-                category_id = re.search(r"^\s*Category\s*=\s*(\d+)\s*$",
-                                        line, re.IGNORECASE).group(1)
+                category_id = re.search(
+                    r"^\s*Category\s*=\s*(\d+)\s*$", line, re.IGNORECASE
+                ).group(1)
             else:
                 desc.append(line)
         if title == "":
@@ -177,7 +188,7 @@ def compute_title_desc(all_blocks):
 
 
 def get_photo_id(message):
-    """It takes in the message and returns the file_id LARGEST photo file 
+    """It takes in the message and returns the file_id LARGEST photo file
     """
 
     # Telegram returns an array containing more than one version of the photo file
@@ -203,8 +214,7 @@ def get_photo_url_from_id(photo_id):
     file_path = requests.get(url).json()["result"]["file_path"]
     # Form the "fully qualified" path to the photo file
     # https://api.telegram.org/file/bot<secretid>/<file_path>
-    photo_url = "https://api.telegram.org/file/bot{}/{}".format(
-        bot_token, file_path)
+    photo_url = "https://api.telegram.org/file/bot{}/{}".format(bot_token, file_path)
     return photo_url
 
 
@@ -234,8 +244,7 @@ def remove_existing_products(all_blocks):
     for block in all_blocks:
         title = block["title"]
         if title.upper() in (x.upper() for x in titles):
-            print(
-                "Product with title[{}] already exists!Skipping.".format(title))
+            print("Product with title[{}] already exists!Skipping.".format(title))
         else:
             filtered_blocks.append(block)
     return filtered_blocks

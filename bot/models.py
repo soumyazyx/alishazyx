@@ -5,6 +5,7 @@ from django.utils import timezone
 class TelegramMessage(models.Model):
     update_id = models.CharField(max_length=255, blank=True)
     json_msg = models.TextField(blank=True)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
