@@ -23,11 +23,8 @@ body {
   /* background: #eee; */
 }
 .product-item {
-  /* padding:20px; */
   border-radius: 10px;
   border: 1px solid #ddd;
-  /* background: white; */
-  /* margin: 15px; */
 }
 .product-item .pi-text .product-price {
   color: #f40181;
@@ -40,7 +37,7 @@ body {
   background: #eee;
   border-radius: 10px;
   padding: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
   min-height: 150px;
   max-height: 150px;
   overflow: auto;
@@ -68,10 +65,6 @@ body {
   object-position: center;
 }
 
-.pi-pic img {
-  /* border: 2px solid #f2c56d; */
-  /* border: 1px solid #eee; */
-}
 .pi-text {
   padding: 10px;
 }
