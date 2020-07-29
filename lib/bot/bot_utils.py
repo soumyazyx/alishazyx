@@ -130,38 +130,45 @@ def save_products(all_blocks):
 
     # Each block represents a new product
     for block in all_blocks:
-        title = block["title"]
-        desc = block["desc"]
-        category_id = block["category_id"]
-        # Handle photos
-        photos = block["photos"]
-        if len(photos) == 0:
-            photo_url = default_photo_url
-        else:
-            photo_id = photos.pop(0)
-            photo_url = get_photo_url_from_id(photo_id)
-        photo_obj = get_photo_from_url(photo_url)
-
-        print("Creating product with title[{}]..".format(title))
-        product = Product()
-        product.title = title
-        product.description = desc
-        product.category = Category.objects.get(id=category_id)
-        product.image.save("logo.png", photo_obj, save=False)
-        product.save()
-        print(
-            "Creating product with title[{}]..Done [productid={}]".format(
-                title, product.id
-            )
-        )
-        print("Adding additional photos for product(if any)..")
-        for photo_id in photos:
-            photo_url = get_photo_url_from_id(photo_id)
+        try:
+            title = block["title"]
+            desc = block["desc"]
+            category_id = block["category_id"]
+            # Handle photos
+            photos = block["photos"]
+            if len(photos) == 0:
+                photo_url = default_photo_url
+            else:
+                photo_id = photos.pop(0)
+                photo_url = get_photo_url_from_id(photo_id)
             photo_obj = get_photo_from_url(photo_url)
-            productimage = ProductImage(product=product, image=photo_obj)
-            productimage.save()
-        print("Adding additional photos for product(if any)..Done")
-        print("--")
+
+            print("Creating product with title[{}]..".format(title))
+            product = Product()
+            product.title = title
+            product.description = desc
+            product.category = Category.objects.get(id=category_id)
+            product.image.save("logo.png", photo_obj, save=False)
+            product.save()
+            print(
+                "Creating product with title[{}]..Done [productid={}]".format(
+                    title, product.id
+                )
+            )
+            print("Adding additional photos for product(if any)..")
+            for photo_id in photos:
+                photo_url = get_photo_url_from_id(photo_id)
+                photo_obj = get_photo_from_url(photo_url)
+                productimage = ProductImage(product=product, image=photo_obj)
+                productimage.save()
+            print("Adding additional photos for product(if any)..Done")
+            print("--")
+        except Exception as e:
+            print("Exception occured:")
+            print(e.message)
+            print(e.args)
+            print("Creating product with title[{}]..FAILED!".format(block["title"]))
+            print("Skipping to next product(if any)")
 
 
 def compute_title_desc(all_blocks):
