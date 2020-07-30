@@ -8,12 +8,31 @@
     <section class="">
       <div class="container">
         <div class="row">
-          {% for category in categories %}
-            <div class="col-lg-4">  
+          {% comment %} {% for category in categories %}
+            <div class="col-lg-2 col-md-3 col-sm6 col-xs-12">
               <a href="/products/{{category.name}}">
                 <div class="product-large set-bg" data-setbg="{{category.image.url}}">
                   <div class="category-name"><h2>{{category.name}}</h2></div>
                 </div>
+              </a>
+            </div>
+          {% endfor %} {% endcomment %}
+          {% comment %} {% for category in categories %}
+            <div class="col-lg-2 col-md-3 col-sm6 col-xs-12">
+              <a href="/products/{{category.name}}">
+                <div class="product-large set-bg" data-setbg="{{category.image.url}}">
+                  <div class="category-name"><h2>{{category.name}}</h2></div>
+                </div>
+              </a>
+            </div>
+          {% endfor %} {% endcomment %}
+          {% for category in categories %}
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+              <a href="/products/{{category.name}}">
+                <figure class="figure">
+                  <img src="{{category.image.url}}" class="figure-img img-fluid rounded" alt="{{category.name}}">
+                  <figcaption class="figure-caption text-center">{{category.name}}</figcaption>
+                </figure> 
               </a>
             </div>
           {% endfor %}

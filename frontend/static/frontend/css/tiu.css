@@ -77,3 +77,16 @@ body {
   padding-bottom: 5px;
   border: none;
 }
+
+.figure img {
+  /* min-height:150px; */
+  /* max-height:150px; */
+  height: 150px;
+  width:100%;
+  object-fit:cover;
+  object-position: top center" 
+}
+
+.figure figcaption {
+  color: #991e25;
+}

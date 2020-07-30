@@ -20,11 +20,11 @@ default_category_id = 17  # Category 'Whatever' has id=17
 def save_telegram_message(message):
 
     try:
-        body_json  = json.loads(message)
-        update_id  = body_json["update_id"]
-        chat_id    = body_json["message"]["chat"]["id"]
+        body_json = json.loads(message)
+        update_id = body_json["update_id"]
+        chat_id = body_json["message"]["chat"]["id"]
         first_name = body_json["message"]["chat"]["first_name"]
-        # Extract text provided the incoming message is a text message        
+        # Extract text provided the incoming message is a text message
         if "text" in body_json["message"]:
             text = body_json["message"]["text"]
         else:
@@ -39,9 +39,7 @@ def save_telegram_message(message):
         else:
             # Record doesn't exist - attempt to insert the record
             telegram_msg = TelegramMessage(
-                json_msg=message,
-                update_id=update_id,
-                first_name=first_name
+                json_msg=message, update_id=update_id, first_name=first_name
             )
             telegram_msg.save()
             print("Saving message to DB..Done [update_id={}]".format(update_id))
@@ -49,17 +47,6 @@ def save_telegram_message(message):
     except Exception as e:
         print("Failed to save telegram message: " + str(e))
         print("Saving message to DB..FAILED!")
-        return -1
-        
-
-def save_telegram_message_working(update_id, json_msg):
-
-    try:
-        telegram_msg = TelegramMessage(update_id=update_id, json_msg=json_msg)
-        telegram_msg.save()
-        return telegram_msg.id
-    except Exception as e:
-        print("Failed to save telegram message: " + str(e))
         return -1
 
 
@@ -201,7 +188,7 @@ def compute_title_desc(all_blocks):
         if title == "":
             # It means there is NO line matching 'Catalog Name'.
             # In such csaes, use the first line as title
-            if (len(desc) > 1):
+            if len(desc) > 1:
                 title = desc.pop(0)
             else:
                 title = "."
