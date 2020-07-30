@@ -33,7 +33,6 @@ body {
   text-align: left;
 }
 .product-desc {
-  
   background: #eee;
   border-radius: 10px;
   padding: 10px;
@@ -82,9 +81,9 @@ body {
   /* min-height:150px; */
   /* max-height:150px; */
   height: 150px;
-  width:100%;
-  object-fit:cover;
-  object-position: top center" 
+  width: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .figure figcaption {
