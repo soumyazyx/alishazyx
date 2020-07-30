@@ -4,28 +4,9 @@
   {% include 'frontend/head.html' %}
   <body>
     {% include 'frontend/header_section.html' %}
-    <!-- Banner Section Begin -->
     <section class="">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
-          {% comment %} {% for category in categories %}
-            <div class="col-lg-2 col-md-3 col-sm6 col-xs-12">
-              <a href="/products/{{category.name}}">
-                <div class="product-large set-bg" data-setbg="{{category.image.url}}">
-                  <div class="category-name"><h2>{{category.name}}</h2></div>
-                </div>
-              </a>
-            </div>
-          {% endfor %} {% endcomment %}
-          {% comment %} {% for category in categories %}
-            <div class="col-lg-2 col-md-3 col-sm6 col-xs-12">
-              <a href="/products/{{category.name}}">
-                <div class="product-large set-bg" data-setbg="{{category.image.url}}">
-                  <div class="category-name"><h2>{{category.name}}</h2></div>
-                </div>
-              </a>
-            </div>
-          {% endfor %} {% endcomment %}
           {% for category in categories %}
             <div class="col-lg-2 col-md-3 col-sm-4 col-6">
               <a href="/products/{{category.name}}">
@@ -39,11 +20,7 @@
         </div>
       </div>
     </section>
-    <!-- Banner Section End -->
-
     {% include 'frontend/footer.html' %} 
     {% include 'frontend/js_plugins.html' %}
-
   </body>
-
 </html>
