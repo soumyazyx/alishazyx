@@ -1,6 +1,9 @@
 /*---------------------
  Banner Section
 -----------------------*/
+body {
+  background: #f1f1f1;
+}
 .category-name {
   text-shadow: 2px 2px #000;
   /* background: radial-gradient(gray, transparent); */
@@ -20,9 +23,8 @@
   /* background: #eee; */
 }
 .product-item {
+  border-radius: 10px;
   border: 1px solid #ddd;
-  /* background: white; */
-  /* margin: 15px; */
 }
 .product-item .pi-text .product-price {
   color: #f40181;
@@ -31,7 +33,10 @@
   text-align: left;
 }
 .product-desc {
-  margin-top: 20px;
+  background: #eee;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
   min-height: 150px;
   max-height: 150px;
   overflow: auto;
@@ -59,12 +64,8 @@
   object-position: center;
 }
 
-.pi-pic img {
-  /* border: 2px solid #f2c56d; */
-  /* border: 1px solid #eee; */
-}
 .pi-text {
-  padding: 5px;
+  padding: 10px;
 }
 
 .pi-text h5 {
@@ -74,4 +75,17 @@
 .breadcrumb-text {
   padding-bottom: 5px;
   border: none;
+}
+
+.figure img {
+  /* min-height:150px; */
+  /* max-height:150px; */
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.figure figcaption {
+  color: #991e25;
 }

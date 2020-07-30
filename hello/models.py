@@ -20,7 +20,8 @@ class Category(models.Model):
 
 class Product(models.Model):
     sku = models.CharField(max_length=255, blank=True, default="-1")
-    title = models.CharField(max_length=255, blank=False, unique=True)
+    # title = models.CharField(max_length=255, blank=False, unique=True)
+    title = models.CharField(max_length=255, blank=False)
     image = models.ImageField(blank=True, upload_to="images/products/")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
