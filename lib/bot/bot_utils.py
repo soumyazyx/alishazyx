@@ -201,7 +201,10 @@ def compute_title_desc(all_blocks):
         if title == "":
             # It means there is NO line matching 'Catalog Name'.
             # In such csaes, use the first line as title
-            title = desc.pop(0)
+            if (len(desc) > 1):
+                title = desc.pop(0)
+            else:
+                title = "."
         if category_id == "":
             # It means there is NO line matching 'Category=100'
             # In such csaes, use the default category id
