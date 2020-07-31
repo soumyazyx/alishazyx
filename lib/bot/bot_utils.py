@@ -22,28 +22,27 @@ def save_telegram_message(message):
     try:
         body_json = json.loads(message)
         update_id = body_json["update_id"]
-        chat_id = body_json["message"]["chat"]["id"]
-        first_name = body_json["message"]["chat"]["first_name"]
-        # Extract text provided the incoming message is a text message
-        if "text" in body_json["message"]:
-            text = body_json["message"]["text"]
-        else:
-            text = ""
-        # Save the record to DB
+        from_id = body_json["message"]["from"]["id"]
+        first_name = body_json["message"]["from"]["first_name"]
+
         print("Saving message to DB..")
+
+        # Check if update_id exist already
         if TelegramMessage.objects.filter(update_id=update_id).exists():
-            # Check if update_id exist already
             print("update_id[{}] already exists!".format(update_id))
             print("Saving message to DB..Done [update_id={}]".format(update_id))
             return update_id
-        else:
-            # Record doesn't exist - attempt to insert the record
-            telegram_msg = TelegramMessage(
-                json_msg=message, update_id=update_id, first_name=first_name
-            )
-            telegram_msg.save()
-            print("Saving message to DB..Done [update_id={}]".format(update_id))
-            return update_id
+
+        # Record doesn't exist - attempt to insert the record
+        telegram_msg = TelegramMessage(
+            from_id=from_id,
+            json_msg=message,
+            update_id=update_id,
+            first_name=first_name,
+        )
+        telegram_msg.save()
+        print("Saving message to DB..Done [update_id={}]".format(update_id))
+        return update_id
     except Exception as e:
         print("Failed to save telegram message: " + str(e))
         print("Saving message to DB..FAILED!")
@@ -146,7 +145,9 @@ def save_products(all_blocks):
             for photo_id in photos:
                 photo_url = get_photo_url_from_id(photo_id)
                 photo_obj = get_photo_from_url(photo_url)
-                productimage = ProductImage(product=product, image=photo_obj)
+                productimage = ProductImage()
+                productimage.product = product
+                productimage.image.save("tiu.png", photo_obj, save=False)
                 productimage.save()
             print("Adding additional photos for product(if any)..Done")
             print("--")

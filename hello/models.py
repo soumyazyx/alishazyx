@@ -18,12 +18,32 @@ class Category(models.Model):
         return "{}. {}".format(self.sequence, self.name)
 
 
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sequence = models.IntegerField(blank=False, default=999)
+    name = models.CharField(max_length=255, blank=False)
+    desc = models.TextField(blank=True)
+    image = models.ImageField(blank=True, upload_to="images/subcategories/")
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Sub-Categories"
+        ordering = ("category", "sequence", "created_on")
+
+    def __str__(self):
+        return "{} / {} / sequence={}".format(
+            self.category.name, self.name, self.sequence
+        )
+
+
 class Product(models.Model):
     sku = models.CharField(max_length=255, blank=True, default="-1")
-    # title = models.CharField(max_length=255, blank=False, unique=True)
     title = models.CharField(max_length=255, blank=False)
     image = models.ImageField(blank=True, upload_to="images/products/")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # subcategory = models.IntegerField(blank=True, null=True)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, default=3)
     description = models.TextField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
@@ -32,7 +52,7 @@ class Product(models.Model):
         verbose_name_plural = "Products"
 
     def __str__(self):
-        return "{} - {}".format(self.category, self.title)
+        return "{} - {}".format(self.subcategory, self.title)
 
 
 class ProductImage(models.Model):
