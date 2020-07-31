@@ -7,7 +7,11 @@
     <div class="product-list">
       <div class="container">
         <div class="row">
-          {% for product_id, details in products_details.items %}
+        {% for subcategory, products in products_details.items %}
+            {{subcategory}}<hr/>        
+        </div>
+        <div class="row">
+            {% for product_id, details in products.items %}
           <div class="col-lg-4 col-sm-6">
             <div class="product-item bg-white shadow">
               <div class="pi-pic">
@@ -27,6 +31,7 @@
               </div>
             </div>
           </div>
+            {% endfor %}
           {% endfor %}
         </div>
       </div>
