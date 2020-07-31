@@ -50,7 +50,7 @@ def product_view(request, categoryname):
     #         print("--")
     #         print(product.title)
 
-    return HttpResponse("wow")
+    return HttpResponse(end - start)
     # for product in products:
     #     products_details[product.id] = {}
     #     products_details[product.id]["sku"] = product.sku
