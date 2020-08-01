@@ -9,6 +9,7 @@ class TelegramMessage(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     from_id = models.IntegerField(blank=True, null=True)
     first_name = models.CharField(max_length=255, blank=True, null=True)
+    processing_status = models.CharField(max_length=255, default="NEW")
 
     class Meta:
         verbose_name_plural = "TelegramMessages"

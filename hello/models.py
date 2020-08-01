@@ -41,8 +41,6 @@ class Product(models.Model):
     sku = models.CharField(max_length=255, blank=True, default="-1")
     title = models.CharField(max_length=255, blank=False)
     image = models.ImageField(blank=True, upload_to="images/products/")
-    # category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    # subcategory = models.IntegerField(blank=True, null=True)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, default=3)
     description = models.TextField(blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
