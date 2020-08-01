@@ -7,14 +7,14 @@ import requests
 from django.core.files import File
 from django.views.decorators.csrf import csrf_exempt
 from bot.models import TelegramMessage
-from hello.models import Product, Category, ProductImage
+from hello.models import Product, Category, SubCategory, ProductImage
 
 end_marker = "endzyx"
 start_marker = "startzyx"
 base_url = "https://api.telegram.org/"
 bot_token = os.environ["BOT_TOKEN"]
 default_photo_url = "https://res.cloudinary.com/hxjbk5wno/image/upload/v1594845942/logo_alisha_min_vra4dr.png"
-default_category_id = 17  # Category 'Whatever' has id=17
+default_subcategory_id = 14  # subcategory - "everything else"
 
 
 def save_telegram_message(message):
@@ -60,7 +60,7 @@ def scan_messages():
     print("Analysing messages to find potential products..Done")
 
     print("Computing title and desc for all products..")
-    all_blocks = compute_title_desc(all_blocks)
+    all_blocks = compute_title_desc_subcat(all_blocks)
     print("Computing title and desc for all products..Done")
 
     print("Check and remove existing products from list..")
@@ -119,7 +119,7 @@ def save_products(all_blocks):
         try:
             title = block["title"]
             desc = block["desc"]
-            category_id = block["category_id"]
+            subcategory_id = block["subcategory_id"]
             # Handle photos
             photos = block["photos"]
             if len(photos) == 0:
@@ -133,7 +133,7 @@ def save_products(all_blocks):
             product = Product()
             product.title = title
             product.description = desc
-            product.category = Category.objects.get(id=category_id)
+            product.subcategory = SubCategory.objects.get(id=subcategory_id)
             product.image.save("logo.png", photo_obj, save=False)
             product.save()
             print(
@@ -159,7 +159,7 @@ def save_products(all_blocks):
             print("Skipping to next product(if any)")
 
 
-def compute_title_desc(all_blocks):
+def compute_title_desc_subcat(all_blocks):
 
     #   - PRODUCT has a title and description.
     #   - Attempt to extract the title
@@ -171,7 +171,7 @@ def compute_title_desc(all_blocks):
         merged_text = "\n".join(text)
         desc = []
         title = ""
-        category_id = ""
+        subcategory_id = ""
         for line in merged_text.splitlines():
             if re.search("Catalog Name", line, re.IGNORECASE):
                 # We found the line. Ex. Catalog Name: blah blah blah
@@ -180,9 +180,9 @@ def compute_title_desc(all_blocks):
                 title = re.sub(r"Catalog\s*Name:?", "", line, flags=re.IGNORECASE)
                 title = re.sub(r"^\*", "", title)
                 title = re.sub(r"\s*\*\s*$", "", title)
-            if re.search(r"^\s*Category\s*=\s*\d+\s*$", line, re.IGNORECASE):
-                category_id = re.search(
-                    r"^\s*Category\s*=\s*(\d+)\s*$", line, re.IGNORECASE
+            elif re.search(r"^\s*Sub\s*=\s*\d+\s*$", line, re.IGNORECASE):
+                subcategory_id = re.search(
+                    r"^\s*Sub\s*=\s*(\d+)\s*$", line, re.IGNORECASE
                 ).group(1)
             else:
                 desc.append(line)
@@ -193,15 +193,14 @@ def compute_title_desc(all_blocks):
                 title = desc.pop(0)
             else:
                 title = "."
-        if category_id == "":
-            # It means there is NO line matching 'Category=100'
-            # In such csaes, use the default category id
-            category_id = default_category_id
+        if subcategory_id == "":
+            # It means there is NO line matching 'Sub=100'.Use the default subcategory id
+            subcategory_id = default_subcategory_id
 
         desc = "\n".join(desc)
         block["title"] = title
         block["desc"] = desc
-        block["category_id"] = category_id
+        block["subcategory_id"] = subcategory_id
         # We have now extracted the 'title'/'desc'/'category' from 'text' values.
         # We dont need 'text' anymore. Delete it.
         del block["text"]
@@ -279,3 +278,16 @@ def send_message(chat_id, message):
     url = "https://api.telegram.org/bot{}/sendMessage".format(bot_token)
     # myobj = {"chat_id": chat_id, "text": message}
     requests.post(url, data={"chat_id": chat_id, "text": message})
+
+
+def get_sub_categories():
+    text = "Select sub-category.\nReply like Sub=10\n"
+    categories = Category.objects.all().order_by("sequence")
+
+    for category in categories:
+        text += "\n\n{}".format(category.name)
+        subcategories = SubCategory.objects.filter(category=category).order_by("id")
+        for subcategory in subcategories:
+            print(subcategory)
+            text += "\n{}:{}".format(subcategory.id, subcategory.name)
+    return text

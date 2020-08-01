@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django_twilio.decorators import twilio_view
 from lib.bot.bot_utils import (
     get_categories,
+    get_sub_categories,
     save_telegram_message,
     scan_messages,
     send_message,
@@ -47,6 +48,7 @@ def telegram_handler(request):
     # Save message to DB
     save_telegram_message_res = save_telegram_message(message=message)
     if save_telegram_message_res == -1:
+        send_message(chat_id, "Internal error occured!")
         return HttpResponse(status=400)
     else:
         thread_respond = threading.Thread(target=respond, args=(message,))
@@ -64,7 +66,8 @@ def respond(message):
         text = ""
 
     if text.lower() == "startzyx":
-        send_message(chat_id, get_categories())
+        send_message(chat_id, "Processing.. please wait!")
+        send_message(chat_id, get_sub_categories())
     elif text.lower() == "endzyx":
         scan_messages()
 

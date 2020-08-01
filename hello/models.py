@@ -32,8 +32,8 @@ class SubCategory(models.Model):
         ordering = ("category", "sequence", "created_on")
 
     def __str__(self):
-        return "{} / {} / sequence={}".format(
-            self.category.name, self.name, self.sequence
+        return "sequence={} / {} / {}".format(
+            self.sequence, self.category.name, self.name
         )
 
 
