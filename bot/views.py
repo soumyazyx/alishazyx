@@ -42,9 +42,10 @@ def scan(request):
 
 @csrf_exempt
 def telegram_handler(request):
-
     print("Telegram message received")
     message = request.body.decode("utf-8")
+    # body_json = json.loads(message)
+    # chat_id = body_json["message"]["chat"]["id"]
     # Save message to DB
     save_telegram_message_res = save_telegram_message(message=message)
     if save_telegram_message_res == -1:
@@ -59,15 +60,20 @@ def telegram_handler(request):
 def respond(message):
     body_json = json.loads(message)
     chat_id = body_json["message"]["chat"]["id"]
+
     # Extract text provided the incoming message is a text message
     if "text" in body_json["message"]:
         text = body_json["message"]["text"]
     else:
         text = ""
+    # Repond depending upon the text recieved
 
     if text.lower() == "startzyx":
-        send_message(chat_id, "Processing.. please wait!")
+        # Send initial response to user
+        send_message(chat_id, "Fetching categories.. please wait!")
         send_message(chat_id, get_sub_categories())
     elif text.lower() == "endzyx":
+        send_message(chat_id, "Creating product.. please wait!")
         scan_messages()
+        send_message(chat_id, "Creating product.. DONE!")
 

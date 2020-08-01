@@ -33,8 +33,11 @@ def product_view(request, categoryname):
             photos = list(ProductImage.objects.filter(product=product))
             for photo in photos:
                 products[subcategory_name][product_id]["images"].append(photo.image.url)
-
-    return render(request, "frontend/products.html", {"products_details": products},)
+    return render(
+        request,
+        "frontend/products.html",
+        {"products_details": products, "subcategories_count": len(products)},
+    )
 
 
 def detail_view(request, id):

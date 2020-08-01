@@ -8,38 +8,42 @@
     <div class="product-list">
       <div class="container-fluid">
         {% for subcategory, products in products_details.items %} 
-        <div class="row" style="border-bottom: 1px solid #eee">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div style="color:#991e25" class="btn" data-toggle="collapse" data-target="#{{ subcategory|cut:' ' }}" aria-controls="{{subcategory|cut:' '}}">
-              <i class="fa" aria-hidden="true"></i>
-              {{subcategory}} <span class="badge badge-warning">{{products|length}} items</span>
+          <div class="row" style="border-bottom: 1px solid #eee">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div style="color:#991e25" class="btn" data-toggle="collapse" data-target="#{{ subcategory|cut:' ' }}" aria-controls="{{subcategory|cut:' '}}">
+                <i class="fa" aria-hidden="true"></i>
+                {{subcategory}} <span class="badge badge-warning">{{products|length}} items</span>
+              </div>
             </div>
-          </div>
-        </div>            
-        <div id="{{subcategory|cut:' '}}" class="row collapse" style="margin-top: 10px;">
+          </div> 
+          {% if subcategories_count == 1 %}     
+            <div id="{{subcategory|cut:' '}}" class="row" style="margin-top: 10px;">
+          {% else %}
+            <div id="{{subcategory|cut:' '}}" class="row collapse" style="margin-top: 10px;">
+          {% endif %}
           {% for product_id, details in products.items %}
-          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="product-item">
-              <div class="pi-pic">
-                <div class="owl-carousel owl-theme">
-                  {% for image in details.images %}
-                  <img src="{{image}}" alt="" />
-                  {% endfor %}
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="product-item">
+                <div class="pi-pic">
+                  <div class="owl-carousel owl-theme">
+                    {% for image in details.images %}
+                    <img src="{{image}}" alt="" />
+                    {% endfor %}
+                  </div>
                 </div>
-              </div>
-              <div class="pi-text">
-                <div class="product-price">
-                  {{details.title}}
+                <div class="pi-text">
+                  <div class="product-price">
+                    {{details.title}}
+                  </div>
+                  <div class="product-desc text-muted">
+                    {{details.description|linebreaksbr}}
+                  </div>
                 </div>
-                <div class="product-desc text-muted">
-                  {{details.description|linebreaksbr}}
-                </div>
-              </div>
-            </div> <!-- .product-item -->
-          </div>
+              </div> <!-- .product-item -->
+            </div>
           {% endfor %}
         </div>
-        {% endfor %}
+      {% endfor %}
       </div>
     </div>
 

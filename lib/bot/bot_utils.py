@@ -256,6 +256,7 @@ def get_categories():
     categories = Category.objects.all().order_by("id")
     for category in categories:
         text += "{}: {}\n".format(category.id, category.name)
+
     return text
 
 
@@ -281,13 +282,15 @@ def send_message(chat_id, message):
 
 
 def get_sub_categories():
-    text = "Select sub-category.\nReply like Sub=10\n"
-    categories = Category.objects.all().order_by("sequence")
 
+    print("Fetching sub-categories..")
+    text = ""
+    categories = Category.objects.all().order_by("sequence")
     for category in categories:
-        text += "\n\n{}".format(category.name)
+        text += "\n{}".format(category.name)
         subcategories = SubCategory.objects.filter(category=category).order_by("id")
         for subcategory in subcategories:
-            print(subcategory)
-            text += "\n{}:{}".format(subcategory.id, subcategory.name)
+            text += "\n        {}:{}".format(subcategory.id, subcategory.name)
+    text += "\n\n----------\nSelect sub-category.Ex: \nSub=10\n----------"
+    print("Fetching sub-categories..Done")
     return text
