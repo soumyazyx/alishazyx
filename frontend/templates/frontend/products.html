@@ -8,18 +8,18 @@
     <div class="product-list">
       <div class="container-fluid">
         {% for subcategory, products in products_details.items %} 
-        <div class="row" style="border-bottom: 1px solid #ddd">
+        <div class="row" style="border-bottom: 1px solid #eee">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div style="color:#991e25" class="btn" data-toggle="collapse" data-target="#{{ subcategory|cut:' ' }}" aria-controls="{{subcategory|cut:' '}}">
               <i class="fa" aria-hidden="true"></i>
-              {{subcategory}}
+              {{subcategory}} <span class="badge badge-warning">{{products|length}} items</span>
             </div>
           </div>
         </div>            
         <div id="{{subcategory|cut:' '}}" class="row collapse" style="margin-top: 10px;">
           {% for product_id, details in products.items %}
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="product-item bg-white">
+            <div class="product-item">
               <div class="pi-pic">
                 <div class="owl-carousel owl-theme">
                   {% for image in details.images %}

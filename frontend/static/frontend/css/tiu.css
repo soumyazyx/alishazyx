@@ -2,7 +2,8 @@
  Banner Section
 -----------------------*/
 body {
-  background: #f1f1f1;
+  /* background: #f1f1f1; */
+  background: #fff;
 }
 .category-name {
   text-shadow: 2px 2px #000;
@@ -23,8 +24,9 @@ body {
   /* background: #eee; */
 }
 .product-item {
+  background: #eee;
   border-radius: 10px;
-  border: 1px solid #ddd;
+  border: 5px solid #eee;
 }
 .product-item .pi-text .product-price {
   color: #f40181;
@@ -33,9 +35,11 @@ body {
   text-align: left;
 }
 .product-desc {
-  background: #eee;
   border-radius: 10px;
-  padding: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
   margin-top: 10px;
   min-height: 150px;
   max-height: 150px;
@@ -58,13 +62,22 @@ body {
   border-radius: 30px;
 }
 
+.product-item .pi-pic {
+  /* background: #f8f8ff; */
+  background: #eee;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
 .product-item .pi-pic img {
   height: 400px;
+  border-radius: 10px;
   object-fit: contain;
   object-position: center;
 }
 
 .pi-text {
+  border-radius: 10px;
+  background: white;
   padding: 10px;
 }
 
@@ -91,9 +104,19 @@ body {
 }
 
 [data-toggle="collapse"] .fa:before {
-  content: "\f139";
+  /* content: "\f139"; */
+  content: "\f077";
 }
 
 [data-toggle="collapse"].collapsed .fa:before {
-  content: "\f13a";
+  /* content: "\f13a"; */
+  content: "\f078";
+}
+
+.logo {
+  padding: 20px 0;
+}
+
+.btn .badge {
+  padding: 5px;
 }
