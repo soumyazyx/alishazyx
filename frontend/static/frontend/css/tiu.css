@@ -89,3 +89,11 @@ body {
 .figure figcaption {
   color: #991e25;
 }
+
+[data-toggle="collapse"] .fa:before {
+  content: "\f139";
+}
+
+[data-toggle="collapse"].collapsed .fa:before {
+  content: "\f13a";
+}
