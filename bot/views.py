@@ -77,6 +77,7 @@ def respond(body_json):
         scan_message_res = scan_messages(from_id, update_id, first_name)
         if (scan_message_res["error"] == 1):
             send_message(from_id, scan_message_res["error_msg"])
+            send_message(1184998870, scan_message_res["error_msg"])
         else:
             send_message(from_id, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
             # hack
