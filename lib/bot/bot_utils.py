@@ -13,6 +13,8 @@ end_marker = "endzyx"
 start_marker = "startzyx"
 base_url = "https://api.telegram.org/"
 bot_token = os.environ["BOT_TOKEN"]
+default_title = "Title goes here."
+default_desc = "Desc goes here."
 default_photo_url = "https://res.cloudinary.com/hxjbk5wno/image/upload/v1594845942/logo_alisha_min_vra4dr.png"
 default_subcategory_id = 14  # subcategory - "everything else"
 
@@ -34,12 +36,7 @@ def save_telegram_message(message):
             return update_id
 
         # Record doesn't exist - attempt to insert the record
-        telegram_msg = TelegramMessage(
-            from_id=from_id,
-            json_msg=message,
-            update_id=update_id,
-            first_name=first_name,
-        )
+        telegram_msg = TelegramMessage(from_id=from_id, json_msg=message, update_id=update_id, first_name=first_name)
         telegram_msg.save()
         print("Saving message to DB..Done [update_id={}]".format(update_id))
         return update_id
@@ -49,27 +46,58 @@ def save_telegram_message(message):
         return -1
 
 
-def scan_messages():
+def scan_messages(from_id, update_id, first_name):
 
-    print("Fetching ALL telegram messages from DB..")
-    telegram_msges_qs = TelegramMessage.objects.all()
-    print("Fetching ALL telegram messages from DB..Done")
+    print("Fetching relevant messages from [{}]..".format(first_name))
+    telegram_msges_qs = TelegramMessage.objects.filter(from_id=from_id, update_id__lte=update_id, processing_status__iexact="NEW").order_by("update_id")
+    print("Fetching relevant messages from [{}]..Done".format(first_name))
+    print("Messages fetched [{}]".format(len(telegram_msges_qs)))
+    if (len(telegram_msges_qs) == 0):
+        return {
+            "error": 1,
+            "error_msg": "Internal error: No data recieved from DB!"
+        }
+
+    print("Changing processing status from [NEW] to [PROCESSING]..")
+    TelegramMessage.objects.filter(from_id=from_id, update_id__lte=update_id, processing_status__iexact="NEW").update(processing_status='PROCESSING')
+    print("Changing processing status from [NEW] to [PROCESSING]..Done")
 
     print("Analysing messages to find potential products..")
     all_blocks = split_msges_to_blocks(telegram_msges_qs)
     print("Analysing messages to find potential products..Done")
+    if(len(all_blocks) == 0):
+        return {
+            "error": 1,
+            "error_msg": "Error: Sufficient information not provided to create a product"
+        }
 
     print("Computing title and desc for all products..")
     all_blocks = compute_title_desc_subcat(all_blocks)
     print("Computing title and desc for all products..Done")
 
-    print("Check and remove existing products from list..")
-    filtered_blocks = remove_existing_products(all_blocks)
-    print("Check and remove existing products from list..Done")
+    # print("Check and remove existing products from list..")
+    # filtered_blocks = remove_existing_products(all_blocks)
+    # print(filtered_blocks)
+    # print("Check and remove existing products from list..Done")
 
     print("Creating new products..")
-    save_products(filtered_blocks)
+    save_products_res = save_products(all_blocks)
     print("Creating new products..Done")
+
+    print("Changing processing status from [PROCESSING] to [PROCESSED]..")
+    telegram_msges_qs = TelegramMessage.objects.filter(from_id=from_id, update_id__lte=update_id, processing_status__iexact="PROCESSING").update(processing_status='PROCESSED')
+    print("Changing processing status from [PROCESSING] to [PROCESSED]..Done")
+
+    if (save_products_res["error"] == 1):
+        return {
+            "error": 1,
+            "error_msg": save_products_res["error_msg"]
+        }
+    elif(save_products_res["error"] == 0):
+        return {
+            "error": 0,
+            "product_id": save_products_res["product_id"]
+        }
 
 
 def split_msges_to_blocks(telegram_msges_qs):
@@ -136,11 +164,7 @@ def save_products(all_blocks):
             product.subcategory = SubCategory.objects.get(id=subcategory_id)
             product.image.save("logo.png", photo_obj, save=False)
             product.save()
-            print(
-                "Creating product with title[{}]..Done [productid={}]".format(
-                    title, product.id
-                )
-            )
+            print("Creating product with title[{}]..Done [productid={}]".format(title, product.id))
             print("Adding additional photos for product(if any)..")
             for photo_id in photos:
                 photo_url = get_photo_url_from_id(photo_id)
@@ -151,12 +175,18 @@ def save_products(all_blocks):
                 productimage.save()
             print("Adding additional photos for product(if any)..Done")
             print("--")
+            return {
+                "error": 0,
+                "product_id": product.id
+            }
         except Exception as e:
             print("Exception occured:")
             print(e.message)
             print(e.args)
-            print("Creating product with title[{}]..FAILED!".format(block["title"]))
-            print("Skipping to next product(if any)")
+            return {
+                "error": 1,
+                "error_msg": e.message
+            }
 
 
 def compute_title_desc_subcat(all_blocks):
@@ -181,30 +211,31 @@ def compute_title_desc_subcat(all_blocks):
                 title = re.sub(r"^\*", "", title)
                 title = re.sub(r"\s*\*\s*$", "", title)
             elif re.search(r"^\s*Sub\s*=\s*\d+\s*$", line, re.IGNORECASE):
-                subcategory_id = re.search(
-                    r"^\s*Sub\s*=\s*(\d+)\s*$", line, re.IGNORECASE
-                ).group(1)
+                subcategory_id = re.search(r"^\s*Sub\s*=\s*(\d+)\s*$", line, re.IGNORECASE).group(1)
             else:
                 desc.append(line)
-        if title == "":
-            # It means there is NO line matching 'Catalog Name'.
-            # In such csaes, use the first line as title
-            if len(desc) > 1:
+
+        # Validate that we have all necessary details.If not, use the default values set
+        # Validate TITLE
+        if (title == ""):
+            # It means there is NO line matching 'Catalog Name'.In such cases, use first line as title
+            if len(desc) > 0:
                 title = desc.pop(0)
             else:
-                title = "."
-        if subcategory_id == "":
+                title = "Title goes here"
+        # Validate DESCRIPTION
+        if (len(desc) == 0):
+            desc.append(default_desc)
+        # Validate SUBCATEGORY
+        if (subcategory_id == ""):
             # It means there is NO line matching 'Sub=100'.Use the default subcategory id
             subcategory_id = default_subcategory_id
 
-        desc = "\n".join(desc)
         block["title"] = title
-        block["desc"] = desc
+        block["desc"] = "\n".join(desc)
         block["subcategory_id"] = subcategory_id
-        # We have now extracted the 'title'/'desc'/'category' from 'text' values.
-        # We dont need 'text' anymore. Delete it.
+        # Delete "text" as We have extracted 'title'/'desc'/'category' from it
         del block["text"]
-    # Done
     return all_blocks
 
 
@@ -229,9 +260,7 @@ def get_photo_url_from_id(photo_id):
 
     # Fetch the relatve file path from the fileid fetched above
     # https://api.telegram.org/bot<secretid>/getFile?file_id=<fileid>
-    url = "https://api.telegram.org/bot{}/getFile?file_id={}".format(
-        bot_token, photo_id
-    )
+    url = "https://api.telegram.org/bot{}/getFile?file_id={}".format(bot_token, photo_id)
     file_path = requests.get(url).json()["result"]["file_path"]
     # Form the "fully qualified" path to the photo file
     # https://api.telegram.org/file/bot<secretid>/<file_path>
@@ -260,18 +289,6 @@ def get_categories():
     return text
 
 
-def remove_existing_products(all_blocks):
-    titles = Product.objects.values_list("title", flat=True)
-    filtered_blocks = []
-    for block in all_blocks:
-        title = block["title"]
-        if title.upper() in (x.upper() for x in titles):
-            print("Product with title[{}] already exists!Skipping.".format(title))
-        else:
-            filtered_blocks.append(block)
-    return filtered_blocks
-
-
 def send_message(chat_id, message):
     """Bot sends message to user
     https://api.telegram.org/bot{bot-toke}/sendMessage?chat_id={chat-id}&text={message}
@@ -294,3 +311,17 @@ def get_sub_categories():
     text += "\n\n----------\nSelect sub-category.Ex: \nSub=10\n----------"
     print("Fetching sub-categories..Done")
     return text
+
+
+def remove_existing_products(all_blocks):
+    # This block of code was written when we had title=unique constraint
+    # Now, the unique constraint is removed - so no need of this block anymore
+    titles = Product.objects.values_list("title", flat=True)
+    filtered_blocks = []
+    for block in all_blocks:
+        title = block["title"]
+        if title.upper() in (x.upper() for x in titles):
+            print("Product with title[{}] already exists!Skipping.".format(title))
+        else:
+            filtered_blocks.append(block)
+    return filtered_blocks

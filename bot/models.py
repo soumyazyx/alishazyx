@@ -13,7 +13,7 @@ class TelegramMessage(models.Model):
 
     class Meta:
         verbose_name_plural = "TelegramMessages"
-        ordering = ("update_id", "created_on")
+        ordering = ("-update_id",)
 
     def __str__(self):
-        return "{}".format(self.update_id)
+        return "{}: {}".format(self.first_name, self.update_id)

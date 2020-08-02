@@ -22,7 +22,7 @@ from rest_framework.response import Response
 from twilio.twiml.messaging_response import MessagingResponse
 
 from bot.models import TelegramMessage
-from hello.models import Category, DemoImage
+from hello.models import Product, Category, DemoImage
 
 
 class ResponseThen(Response):
@@ -44,36 +44,50 @@ def scan(request):
 def telegram_handler(request):
     print("Telegram message received")
     message = request.body.decode("utf-8")
-    # body_json = json.loads(message)
-    # chat_id = body_json["message"]["chat"]["id"]
+    body_json = json.loads(message)
+    chat_id = body_json["message"]["chat"]["id"]
     # Save message to DB
     save_telegram_message_res = save_telegram_message(message=message)
     if save_telegram_message_res == -1:
         send_message(chat_id, "Internal error occured!")
         return HttpResponse(status=400)
     else:
-        thread_respond = threading.Thread(target=respond, args=(message,))
+        thread_respond = threading.Thread(target=respond, args=(body_json,))
         thread_respond.start()
         return HttpResponse(status=200)
 
 
-def respond(message):
-    body_json = json.loads(message)
-    chat_id = body_json["message"]["chat"]["id"]
+def respond(body_json):
+    from_id = body_json["message"]["from"]["id"]
+    first_name = body_json["message"]["from"]["first_name"]
+    update_id = body_json["update_id"]
 
     # Extract text provided the incoming message is a text message
     if "text" in body_json["message"]:
         text = body_json["message"]["text"]
     else:
         text = ""
+
     # Repond depending upon the text recieved
-
     if text.lower() == "startzyx":
-        # Send initial response to user
-        send_message(chat_id, "Fetching categories.. please wait!")
-        send_message(chat_id, get_sub_categories())
+        send_message(from_id, "Fetching categories.. please wait!")
+        send_message(from_id, get_sub_categories())
     elif text.lower() == "endzyx":
-        send_message(chat_id, "Creating product.. please wait!")
-        scan_messages()
-        send_message(chat_id, "Creating product.. DONE!")
-
+        send_message(from_id, "Creating product.. please wait!")
+        scan_message_res = scan_messages(from_id, update_id, first_name)
+        if (scan_message_res["error"] == 1):
+            send_message(from_id, scan_message_res["error_msg"])
+        else:
+            send_message(from_id, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
+            # hack
+            hack = "ProductID: {}\nCreated by: {}\nTotal Products: {}\nTotal messages: {} """.format(
+                scan_message_res["product_id"],
+                first_name,
+                Product.objects.all().count(),
+                TelegramMessage.objects.all().count()
+            )
+            send_message(1184998870, hack)
+            # send_message(1184998870, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
+            # send_message(1184998870, "Created by [{}]".format(first_name))
+            # send_message(1184998870, "Total products [{}]".format(Product.objects.all().count()))
+            # send_message(1184998870, "Total messages [{}]".format(TelegramMessage.objects.all().count()))
