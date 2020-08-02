@@ -119,6 +119,8 @@ body {
 
 .btn .badge {
   padding: 5px;
-  /* background: #faebd7; */
-  background: #ffe4c4;
+  font-size: 90%;
+  background: #eee;
+  /* color: white; */
+  /* background: #ccc; */
 }
