@@ -49,3 +49,6 @@ def detail_view(request, id):
 def fashi(request):
     return render(request, "frontend/index_fashi.html")
 
+
+def login(request):
+    return render(request, "frontend/login.html")

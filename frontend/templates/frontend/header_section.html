@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!-- preloader section -->
 <div id="preloder">
   <div class="loader"></div>
@@ -19,4 +20,43 @@
       </div>
     </div>
   </div>
+</header>
+
+<header class="header">
+  <nav class="navbar" style="border:1px solid #eee; margin-bottom:10px;">
+{% if user.is_authenticated %}
+    <a><i class="fas fa-arrow-left d-none"></i></a>
+    <span>
+      <button
+        style="background: none; border: none;color:#9a1e24"
+        class="dropdown-toggle"
+        data-toggle="dropdown"
+        data-disabled="true"
+      ><span class="caret"></span>
+        <img
+          class="avatar"
+          src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
+          class="rounded-circle"
+        />        
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right m-1 p-1 text-shaddlebrown">
+        <li>{{user.first_name}} {{user.last_name}}</li>
+        <li>{{user.email}}</li>
+        <div class="dropdown-divider"></div>
+        <li>
+          <a id="logout" class="btn btn-block" href="/accounts/logout">
+            Logout
+          </a>
+        </li>
+      </ul>
+    </span>
+{% else %}
+    <a><i class="fa fa-arrow-left d-none"></i></a>
+    <span>
+      <a href="/accounts/google/login" style="text-decoration: none">
+        Login &nbsp;<i class="fa fa-user-circle"></i> 
+      </a>
+    </span>
+{% endif %}
+  </nav>
 </header>

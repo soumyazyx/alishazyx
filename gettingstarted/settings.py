@@ -5,11 +5,9 @@ import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "CHANGE_ME!!exit!! (P.S. the SECRET_KEY environment variable will be used, if set, instead)."
 SECRET_KEY = os.environ["SECRET_KEY"]
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -25,13 +23,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    # local
     "hello",
     "frontend",
     "bot",
+    # Cloudinary
     "cloudinary_storage",
     "cloudinary",
     "django_cleanup",
+    # Whatsapp - twilio
     "django_twilio",
+    # allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    # PROVIDERS
+    "allauth.socialaccount.providers.google",
 ]
 
 MIDDLEWARE = [
@@ -76,9 +84,7 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
+# Password validation https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
@@ -89,9 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
-
+# Internationalization - https://docs.djangoproject.com/en/2.0/topics/i18n/
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -99,14 +103,13 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-
+# Static files (CSS, JavaScript, Images) - https://docs.djangoproject.com/en/2.0/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# Cloudinary cloud storage
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": "hxjbk5wno",
     "API_KEY": "825576251424473",
@@ -115,10 +118,17 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 # STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
-
+# Whatsapp - twilio
 TWILIO_ACCOUNT_SID = os.environ["TWILIO_ACCOUNT_SID"]
 TWILIO_AUTH_TOKEN = os.environ["TWILIO_AUTH_TOKEN"]
 
+# ALLAUTH
+SITE_ID = 1
+LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_ON_GET = True
+
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
