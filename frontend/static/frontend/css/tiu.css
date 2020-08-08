@@ -3,7 +3,14 @@
 -----------------------*/
 body {
   font-family: 'Varela Round', sans-serif;
-  background: #fff;
+  /*for fixed navbar on top */
+  /* padding-top: 80px;  */
+  background: #f8f9fa!important
+  
+}
+/* @media (min-width: 980px) { body { padding-top: 40px; } }  */
+.figure-caption {
+  font-size: 150%;
 }
 .category-name {
   text-shadow: 2px 2px #000;
@@ -77,6 +84,7 @@ body {
 
 .figure figcaption {
   color: #991e25;
+  font-size: 110%;
 }
 
 [data-toggle="collapse"] .fa:before {
