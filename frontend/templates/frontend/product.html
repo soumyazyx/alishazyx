@@ -2,27 +2,37 @@
 <!DOCTYPE html>
 <html lang="zxx">
   {% include 'frontend/head.html' %}
+  <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'frontend/css/tiu.css' %}" type="text/css">
   <style>
   .product-shop.page-details {
     padding: 0 !important;
   }
+  .product-details .pd-title {
+    color: #f9037b;
+    font-size: 150%;
+  }
+  .carousel-control-next,
+  .carousel-control-prev {
+    filter: invert(100%);
+  }
   </style>
-<body>
+  <body>
   {% include 'frontend/header_section.html' %}
     <!-- Product Shop Section Begin -->
     <section class="product-shop spad page-details">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-lg-4">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
               <div class="carousel-inner">
-                
                 <div class="carousel-item active">
-                  <img class="lazyload d-block w-100" data-src="{{product_details.coverimage}}">
+                  <img class="d-block w-100" src="{{product_details.coverimage}}">
                 </div>
                 {% for image in product_details.images %}
                   <div class="carousel-item">
-                    <img class="lazyload d-block w-100" data-src="{{image}}">
+                    <img class="d-block w-100" src="{{image}}">
                   </div>
                 {% endfor %}
               </div>
@@ -39,7 +49,7 @@
           <div class="col-lg-8">
             <div class="product-details">
               <div class="pd-title">
-                <h3>{{product_details.title}}</h3>
+                {{product_details.title}}
                 <a href="#" class="heart-icon"></a>
               </div>
               <div class="pd-desc">
@@ -55,14 +65,14 @@
 
     
     {% include 'frontend/footer.html' %} 
-    {% include 'frontend/js_plugins.html'%}
-    <style>
-    .carousel-control-next,
-    .carousel-control-prev {
-      filter: invert(100%);
-    }
-    </style>
-
-</body>
-
+    <script src="{% static 'frontend/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'frontend/js/main.js' %}"></script>
+    <script>
+    $('.carousel').carousel({
+      interval: 2000,
+      wrap: false
+    })
+    </script>
+  </body>  
 </html>

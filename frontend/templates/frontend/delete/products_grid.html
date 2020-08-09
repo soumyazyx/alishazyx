@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+  {% include 'frontend/head.html' %}
+  <style>
+    .product-item {
+      border: 1px solid #f5f5dc;
+      margin: 10px 1px;
+      background:#f5f5dc;
+    }
+    .product-item .pi-pic img {
+      height: 300px;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .product-title {
+      padding: .5em;
+      color: #f90283;
+      font-weight:bold;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    a:hover {
+      color: #991e25;
+    }
+  </style>
+
+  <body>
+    {% include 'frontend/header_section.html' %}
+
+    <div class="product-list">
+      <div class="container-fluid">
+        <div class="row no-gutters">
+          {% for product_id, details in products_details.items %}
+          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-6">
+            <a href="/{{categoryname}}/{{subcategoryname}}/{{product_id}}">
+              <div class="product-item">
+                <div class="pi-pic">
+                  <div class="owl-carousel owl-theme">
+                    {% for image in details.images %}
+                      <img data-src="{{image}}" class="lazyload" alt="{{details.title}}" />
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="product-title">{{details.title}}</div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  
+    {% include 'frontend/footer.html' %} 
+    {% include 'frontend/js_plugins.html'%}
+    <script>
+      $(function () {
+        $(".owl-carousel").owlCarousel({
+          margin: 10,
+          loop: false,
+          items: 1,
+          // stagePadding: 30
+        });
+      });
+    </script>
+  </body>
+</html>

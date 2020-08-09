@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="zxx">
   {% include 'frontend/head.html' %}
+  <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'frontend/css/tiu.css' %}" type="text/css">
   <body>
     {% include 'frontend/header_section.html' %}
     <section class="">
@@ -22,6 +25,10 @@
       </div>
     </section>
     {% include 'frontend/footer.html' %} 
-    {% include 'frontend/js_plugins.html' %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js"></script>
+
   </body>
 </html>

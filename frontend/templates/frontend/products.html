@@ -2,67 +2,32 @@
 <!DOCTYPE html>
 <html lang="zxx">
   {% include 'frontend/head.html' %}
-  <style>
-    .product-item {
-      border: 1px solid #f5f5dc;
-      margin: 10px 1px;
-      background:#f5f5dc;
-    }
-    .product-item .pi-pic img {
-      height: 300px;
-      object-fit: cover;
-      object-position: top center;
-    }
-    .product-title {
-      padding: .5em;
-      color: #f90283;
-      font-weight:bold;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    a:hover {
-      color: #991e25;
-    }
-  </style>
-
+  <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'frontend/css/tiu.css' %}" type="text/css">
   <body>
     {% include 'frontend/header_section.html' %}
-
-    <div class="product-list">
+    <section class="">
       <div class="container-fluid">
-        <div class="row no-gutters">
+        <div class="row">
           {% for product_id, details in products_details.items %}
-          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-6">
-            <a href="/{{categoryname}}/{{subcategoryname}}/{{product_id}}">
-              <div class="product-item">
-                <div class="pi-pic">
-                  <div class="owl-carousel owl-theme">
-                    {% for image in details.images %}
-                      <img data-src="{{image}}" class="lazyload" alt="{{details.title}}" />
-                    {% endfor %}
-                  </div>
-                </div>
-                <div class="product-title">{{details.title}}</div>
-              </div>
-            </a>
-          </div>
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+              <a href="/{{categoryname}}/{{subcategoryname}}/{{product_id}}">
+                {% for image in details.images %}
+                <figure class="figure">
+                  <img data-src="{{image}}"  style="border:1px solid #eee" class="lazyload figure-img img-fluid rounded" alt="{{details.title}}">
+                  <figcaption class="figure-caption text-center">{{details.title}}</figcaption>
+                </figure> 
+                {% endfor %}
+              </a>
+            </div>
           {% endfor %}
         </div>
       </div>
-    </div>
-  
+    </section>
     {% include 'frontend/footer.html' %} 
-    {% include 'frontend/js_plugins.html'%}
-    <script>
-      $(function () {
-        $(".owl-carousel").owlCarousel({
-          margin: 10,
-          loop: false,
-          items: 1,
-          // stagePadding: 30
-        });
-      });
-    </script>
+    <script src="{% static 'frontend/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'frontend/js/main.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js"></script>
   </body>
 </html>
