@@ -66,7 +66,12 @@ def product_view(request, categoryname, subcategoryname, productid):
     for photo in photos:
         product_details["images"].append(transform_url(photo.image.url))
     return render(
-        request, "frontend/product.html", {"product_details": product_details},
+        request, "frontend/product.html", {
+            "productid": productid,
+            "category": categoryname,
+            "subcategory": subcategoryname,
+            "product_details": product_details
+        },
     )
 
 

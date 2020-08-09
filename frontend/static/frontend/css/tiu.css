@@ -3,10 +3,8 @@
 -----------------------*/
 body {
   font-family: 'Varela Round', sans-serif;
-  /*for fixed navbar on top */
-  /* padding-top: 80px;  */
-  background: #f8f9fa!important
-  
+  background: #f8f9fa;
+  /* background: #f5f5f5; */
 }
 /* @media (min-width: 980px) { body { padding-top: 40px; } }  */
 .figure-caption {
@@ -98,7 +96,7 @@ body {
 }
 
 .logo {
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 .btn .badge {
