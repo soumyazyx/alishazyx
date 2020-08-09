@@ -30,7 +30,7 @@ def products_view(request, categoryname, subcategoryname):
         .filter(name=subcategoryname)
         .first()
     )
-    prds = Product.objects.filter(subcategory=subcategory)
+    prds = Product.objects.filter(subcategory=subcategory).order_by("-created_on")
     products = {}
     for product in prds:
         product_id = product.id
@@ -54,8 +54,6 @@ def products_view(request, categoryname, subcategoryname):
 
 def product_view(request, categoryname, subcategoryname, productid):
 
-    original_image_urls = []
-
     product = get_object_or_404(Product, id=productid)
     product_details = {}
     product_details["sku"] = product.sku
@@ -67,14 +65,6 @@ def product_view(request, categoryname, subcategoryname, productid):
     photos = list(ProductImage.objects.filter(product=product))
     for photo in photos:
         product_details["images"].append(transform_url(photo.image.url))
-
-    print(product_details)
-    # return HttpResponse("wow")
-    # return render(
-    #     request,
-    #     "frontend/product_detail.html",
-    #     {"product_details": product_details},
-    # )
     return render(
         request, "frontend/product.html", {"product_details": product_details},
     )

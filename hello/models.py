@@ -48,6 +48,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name_plural = "Products"
+        ordering = ("-created_on",)
 
     def __str__(self):
         return "{} - {}".format(self.subcategory, self.title)
