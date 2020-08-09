@@ -3,6 +3,7 @@ import logging
 import os
 import threading
 import time
+import urllib.parse
 import urllib.request
 
 import requests
@@ -10,19 +11,15 @@ from django.core.files import File
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_twilio.decorators import twilio_view
-from lib.bot.bot_utils import (
-    get_categories,
-    get_sub_categories,
-    save_telegram_message,
-    scan_messages,
-    send_message,
-)
+from lib.bot.bot_utils import (get_categories, get_sub_categories,
+                               save_telegram_message, scan_messages,
+                               send_message)
 from rest_framework import status
 from rest_framework.response import Response
 from twilio.twiml.messaging_response import MessagingResponse
 
 from bot.models import TelegramMessage
-from hello.models import Product, Category, DemoImage
+from hello.models import Category, DemoImage, Product
 
 
 class ResponseThen(Response):
@@ -78,11 +75,21 @@ def respond(body_json):
         if (scan_message_res["error"] == 1):
             send_message(from_id, scan_message_res["error_msg"])
             send_message(1184998870, scan_message_res["error_msg"])
-        else:
-            send_message(from_id, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
+        else:  
+            product_id = scan_message_res["product_id"]
+            product = Product.objects.filter(id=product_id).values('id','title', 'subcategory__name', 'subcategory__category__name')
+            category    = urllib.parse.quote(product[0]['subcategory__category__name'])
+            subcategory = urllib.parse.quote(product[0]['subcategory__name'])
+            url = "https://alishazyx.herokuapp.com/{}/{}/{}".format(
+                category,
+                subcategory, 
+                product_id
+            )
+            print(url)
+            send_message(from_id, "New product created. {}".format(url))
             # hack
-            hack = "ProductID: {}\nCreated by: {}\nTotal Products: {}\nTotal messages: {} """.format(
-                scan_message_res["product_id"],
+            hack = "{} Created by: {}\nTotal Products: {}\nTotal messages: {}".format(
+                url,
                 first_name,
                 Product.objects.all().count(),
                 TelegramMessage.objects.all().count()
