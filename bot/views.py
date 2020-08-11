@@ -88,12 +88,22 @@ def respond(body_json):
             print(url)
             send_message(from_id, "New product created. {}".format(url))
             # hack
-            hack = "{} Created by: {}\nTotal Products: {}\nTotal messages: {}".format(
+            summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(
+                url,
+                first_name,
+                Product.objects.all().count()
+            )
+            
+            hack = "{} \n\nCreated by: {}\nTotal Products: {}\nTotal messages: {}".format(
                 url,
                 first_name,
                 Product.objects.all().count(),
                 TelegramMessage.objects.all().count()
             )
+            # alisha 1180957546
+            # suman 1319577711
+            send_message(1180957546, summary)
+            send_message(1319577711, summary)
             send_message(1184998870, hack)
             # send_message(1184998870, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
             # send_message(1184998870, "Created by [{}]".format(first_name))
