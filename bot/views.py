@@ -102,9 +102,15 @@ def respond(body_json):
             )
             # alisha 1180957546
             # suman 1319577711
-            send_message(1180957546, summary)
-            send_message(1319577711, summary)
-            send_message(1184998870, hack)
+            if (str(from_id) == str(1180957546)):
+                send_message(1319577711, summary)
+                send_message(1184998870, hack)
+            elif (str(from_id) == str(1319577711)):
+                send_message(1180957546, summary)
+                send_message(1184998870, hack)
+            else:
+                send_message(1184998870, hack)
+
             # send_message(1184998870, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
             # send_message(1184998870, "Created by [{}]".format(first_name))
             # send_message(1184998870, "Total products [{}]".format(Product.objects.all().count()))
