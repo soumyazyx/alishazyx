@@ -85,7 +85,6 @@ def respond(body_json):
                 subcategory, 
                 product_id
             )
-            print(url)
             send_message(from_id, "New product created. {}".format(url))
             
             summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(
@@ -100,13 +99,16 @@ def respond(body_json):
                 Product.objects.all().count(),
                 TelegramMessage.objects.all().count()
             )
-            # alisha 1180957546
-            # suman 1319577711
+            # alisha=1180957546, suman=1319577711, soumya=1184998870
             if (str(from_id) == str(1180957546)):
                 send_message(1319577711, summary)
                 send_message(1184998870, hack)
             elif (str(from_id) == str(1319577711)):
                 send_message(1180957546, summary)
+                send_message(1184998870, hack)
+            elif (str(from_id) == str(1184998870)):
+                send_message(1180957546, summary)
+                send_message(1319577711, summary)
                 send_message(1184998870, hack)
             else:
                 send_message(1184998870, hack)
