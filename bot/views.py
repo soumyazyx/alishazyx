@@ -87,7 +87,7 @@ def respond(body_json):
             )
             print(url)
             send_message(from_id, "New product created. {}".format(url))
-            # hack
+            
             summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(
                 url,
                 first_name,
