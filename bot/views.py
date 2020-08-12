@@ -88,7 +88,7 @@ def respond(body_json):
             category = urllib.parse.quote(product[0]['subcategory__category__name'])
             subcategory = urllib.parse.quote(product[0]['subcategory__name'])
             total_products = Product.objects.all().count()
-.            total_telegram_msges = TelegramMessage.objects.all().count()
+            total_telegram_msges = TelegramMessage.objects.all().count()
 
             url = "https://alishazyx.herokuapp.com/{}/{}/{}".format(category, subcategory, product_id)
             summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(url, first_name, total_products)
