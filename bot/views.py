@@ -21,6 +21,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from bot.models import TelegramMessage
 from hello.models import Category, DemoImage, Product
 
+allowed_from_ids = [1319577711, 1180957546, 1184998870] # soumya,sumna,alisha
 
 class ResponseThen(Response):
     def __init__(self, data, then_callback, **kwargs):
@@ -59,6 +60,12 @@ def respond(body_json):
     first_name = body_json["message"]["from"]["first_name"]
     update_id = body_json["update_id"]
 
+    # if (from_id in allowed_from_ids):
+        # possible hack attempt
+        # we have seen cases when robots tried to send messages
+        # In such cases, dont write to DBs. Ignore.
+        # return
+
     # Extract text provided the incoming message is a text message
     if "text" in body_json["message"]:
         text = body_json["message"]["text"]
@@ -78,42 +85,31 @@ def respond(body_json):
         else:  
             product_id = scan_message_res["product_id"]
             product = Product.objects.filter(id=product_id).values('id','title', 'subcategory__name', 'subcategory__category__name')
-            category    = urllib.parse.quote(product[0]['subcategory__category__name'])
+            category = urllib.parse.quote(product[0]['subcategory__category__name'])
             subcategory = urllib.parse.quote(product[0]['subcategory__name'])
-            url = "https://alishazyx.herokuapp.com/{}/{}/{}".format(
-                category,
-                subcategory, 
-                product_id
-            )
-            send_message(from_id, "New product created. {}".format(url))
-            
-            summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(
-                url,
-                first_name,
-                Product.objects.all().count()
-            )
-            
-            hack = "{} \n\nCreated by: {}\nTotal Products: {}\nTotal messages: {}".format(
-                url,
-                first_name,
-                Product.objects.all().count(),
-                TelegramMessage.objects.all().count()
-            )
-            # alisha=1180957546, suman=1319577711, soumya=1184998870
-            if (str(from_id) == str(1180957546)):
-                send_message(1319577711, summary)
-                send_message(1184998870, hack)
-            elif (str(from_id) == str(1319577711)):
-                send_message(1180957546, summary)
-                send_message(1184998870, hack)
-            elif (str(from_id) == str(1184998870)):
-                send_message(1180957546, summary)
-                send_message(1319577711, summary)
-                send_message(1184998870, hack)
-            else:
-                send_message(1184998870, hack)
+            total_products = Product.objects.all().count()
+.            total_telegram_msges = TelegramMessage.objects.all().count()
 
-            # send_message(1184998870, "New product with productid [{}] created!".format(scan_message_res["product_id"]))
-            # send_message(1184998870, "Created by [{}]".format(first_name))
-            # send_message(1184998870, "Total products [{}]".format(Product.objects.all().count()))
-            # send_message(1184998870, "Total messages [{}]".format(TelegramMessage.objects.all().count()))
+            url = "https://alishazyx.herokuapp.com/{}/{}/{}".format(category, subcategory, product_id)
+            summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(url, first_name, total_products)
+            details = "{} \n\nCreated by: {}\nTotal Products: {}\nTotal messages: {}".format(url,first_name,total_products,total_telegram_msges)
+
+            send_message(1319577711, summary) #suman
+            send_message(1180957546, summary) #alisha
+            send_message(1184998870, details) #soumya
+
+            # Send message to creator of product
+            # send_message(from_id, "New product created. {}".format(url))
+            # alisha=1180957546, suman=1319577711, soumya=1184998870
+            # if (str(from_id) == str(1180957546)):
+            #     send_message(1319577711, summary)
+            #     send_message(1184998870, hack)
+            # elif (str(from_id) == str(1319577711)):
+            #     send_message(1180957546, summary)
+            #     send_message(1184998870, hack)
+            # elif (str(from_id) == str(1184998870)):
+            #     send_message(1180957546, summary)
+            #     send_message(1319577711, summary)
+            #     send_message(1184998870, hack)
+            # else:
+            #     send_message(1184998870, hack)
