@@ -36,12 +36,7 @@ def save_telegram_message(message):
             return update_id
 
         # Record doesn't exist - attempt to insert the record
-        telegram_msg = TelegramMessage(
-            from_id=from_id,
-            json_msg=message,
-            update_id=update_id,
-            first_name=first_name,
-        )
+        telegram_msg = TelegramMessage(from_id=from_id, json_msg=message, update_id=update_id, first_name=first_name,)
         telegram_msg.save()
         print("Saving message to DB..Done [update_id={}]".format(update_id))
         return update_id
@@ -55,9 +50,7 @@ def scan_messages(from_id, update_id, first_name):
 
     print("Fetching relevant messages from [{}]..".format(first_name))
     telegram_msges_qs = TelegramMessage.objects.filter(
-        from_id=from_id,
-        update_id__lte=update_id,
-        processing_status__iexact="NEW",
+        from_id=from_id, update_id__lte=update_id, processing_status__iexact="NEW",
     ).order_by("update_id")
     print("Fetching relevant messages from [{}]..Done".format(first_name))
     print("Messages fetched [{}]".format(len(telegram_msges_qs)))
@@ -68,11 +61,9 @@ def scan_messages(from_id, update_id, first_name):
         }
 
     print("Changing processing status from [NEW] to [PROCESSING]..")
-    TelegramMessage.objects.filter(
-        from_id=from_id,
-        update_id__lte=update_id,
-        processing_status__iexact="NEW",
-    ).update(processing_status="PROCESSING")
+    TelegramMessage.objects.filter(from_id=from_id, update_id__lte=update_id, processing_status__iexact="NEW",).update(
+        processing_status="PROCESSING"
+    )
     print("Changing processing status from [NEW] to [PROCESSING]..Done")
 
     print("Analysing messages to find potential products..")
@@ -99,18 +90,19 @@ def scan_messages(from_id, update_id, first_name):
 
     print("Changing processing status from [PROCESSING] to [PROCESSED]..")
     telegram_msges_qs = TelegramMessage.objects.filter(
-        from_id=from_id,
-        update_id__lte=update_id,
-        processing_status__iexact="PROCESSING",
+        from_id=from_id, update_id__lte=update_id, processing_status__iexact="PROCESSING",
     ).update(processing_status="PROCESSED")
     print("Changing processing status from [PROCESSING] to [PROCESSED]..Done")
 
     # Delete telegram messages which are already [PROCESSED]
     print("Deleting the telegram messages from database..")
-    TelegramMessage.objects.filter(
-        processing_status__iexact="PROCESSED"
-    ).delete()
+    TelegramMessage.objects.filter(processing_status__iexact="PROCESSED").delete()
     print("Deleting the telegram messages from database..Done")
+
+    # Fetch image url from productimage table and update in product table
+    print("Fetching image urls and updating product table..")
+    scan_image_urls(save_products_res["product_id"])
+    print("Fetching image urls and updating product table..Done")
 
     if save_products_res["error"] == 1:
         return {"error": 1, "error_msg": save_products_res["error_msg"]}
@@ -182,11 +174,7 @@ def save_products(all_blocks):
             product.subcategory = SubCategory.objects.get(id=subcategory_id)
             product.image.save("logo.png", photo_obj, save=False)
             product.save()
-            print(
-                "Creating product with title[{}]..Done [productid={}]".format(
-                    title, product.id
-                )
-            )
+            print("Creating product with title[{}]..Done [productid={}]".format(title, product.id))
             print("Adding additional photos for product(if any)..")
             for photo_id in photos:
                 photo_url = get_photo_url_from_id(photo_id)
@@ -223,15 +211,11 @@ def compute_title_desc_subcat(all_blocks):
                 # We found the line. Ex. Catalog Name: blah blah blah
                 # Strip off the 'Catalog Name' so that we end up with 'blah blah blah' as title
                 # Using regex substitution to do so - substitute 'Catalog Name' with ''
-                title = re.sub(
-                    r"Catalog\s*Name:?", "", line, flags=re.IGNORECASE
-                )
+                title = re.sub(r"Catalog\s*Name:?", "", line, flags=re.IGNORECASE)
                 title = re.sub(r"^\*", "", title)
                 title = re.sub(r"\s*\*\s*$", "", title)
             elif re.search(r"^\s*Sub\s*=\s*\d+\s*$", line, re.IGNORECASE):
-                subcategory_id = re.search(
-                    r"^\s*Sub\s*=\s*(\d+)\s*$", line, re.IGNORECASE
-                ).group(1)
+                subcategory_id = re.search(r"^\s*Sub\s*=\s*(\d+)\s*$", line, re.IGNORECASE).group(1)
             else:
                 desc.append(line)
 
@@ -280,15 +264,11 @@ def get_photo_url_from_id(photo_id):
 
     # Fetch the relatve file path from the fileid fetched above
     # https://api.telegram.org/bot<secretid>/getFile?file_id=<fileid>
-    url = "https://api.telegram.org/bot{}/getFile?file_id={}".format(
-        bot_token, photo_id
-    )
+    url = "https://api.telegram.org/bot{}/getFile?file_id={}".format(bot_token, photo_id)
     file_path = requests.get(url).json()["result"]["file_path"]
     # Form the "fully qualified" path to the photo file
     # https://api.telegram.org/file/bot<secretid>/<file_path>
-    photo_url = "https://api.telegram.org/file/bot{}/{}".format(
-        bot_token, file_path
-    )
+    photo_url = "https://api.telegram.org/file/bot{}/{}".format(bot_token, file_path)
     return photo_url
 
 
@@ -329,9 +309,7 @@ def get_sub_categories():
     categories = Category.objects.all().order_by("sequence")
     for category in categories:
         text += "\n{}".format(category.name)
-        subcategories = SubCategory.objects.filter(category=category).order_by(
-            "id"
-        )
+        subcategories = SubCategory.objects.filter(category=category).order_by("id")
         for subcategory in subcategories:
             text += "\n        {}:{}".format(subcategory.id, subcategory.name)
     text += "\n\n----------\nSelect sub-category.Ex: \nSub=10\n----------"
@@ -347,9 +325,29 @@ def remove_existing_products(all_blocks):
     for block in all_blocks:
         title = block["title"]
         if title.upper() in (x.upper() for x in titles):
-            print(
-                "Product with title[{}] already exists!Skipping.".format(title)
-            )
+            print("Product with title[{}] already exists!Skipping.".format(title))
         else:
             filtered_blocks.append(block)
     return filtered_blocks
+
+
+def scan_image_urls(product_id):
+    """ This method takes in the product id and fetches the urls to all the images
+    Once fetched, it writes the urls into the product table
+    """
+    print("Fetching image url for [productid={}]..".format(product_id))
+    # Get the product concerned from DB
+    product = Product.objects.filter(id=product_id).first()
+    # Handle product cover image
+    product.cover_img_url = product.image.url
+    # Handle product additional images
+    product_images_urls = []
+    for record in ProductImage.objects.filter(product_id=product_id):
+        product_images_urls.append(record.image.url)
+    product.product_img_urls_csv = ",".join(product_images_urls)
+    product.save()
+    print("Fetching image url for [productid={}]..Done".format(product_id))
+    print("Product table updated.")
+    print("Deleting the records from productimage table..")
+    # ProductImage.objects.filter(product_id=product_id).delete()
+    print("Deleting the records from productimage table..Done")

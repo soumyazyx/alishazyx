@@ -1,9 +1,8 @@
 from django.contrib import admin
-from hello.models import Category, SubCategory, Product, ProductImage, DemoImage
+from hello.models import Category, SubCategory, Product, ProductImage
 
 admin.site.register(Category)
 admin.site.register(SubCategory)
-admin.site.register(DemoImage)
 
 
 class ProductImageAdmin(admin.StackedInline):

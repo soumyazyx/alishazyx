@@ -11,17 +11,23 @@ from django.core.files import File
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_twilio.decorators import twilio_view
-from lib.bot.bot_utils import (get_categories, get_sub_categories,
-                               save_telegram_message, scan_messages,
-                               send_message)
+from lib.bot.bot_utils import (
+    get_categories,
+    get_sub_categories,
+    save_telegram_message,
+    scan_messages,
+    send_message,
+    scan_image_urls,
+)
 from rest_framework import status
 from rest_framework.response import Response
 from twilio.twiml.messaging_response import MessagingResponse
 
 from bot.models import TelegramMessage
-from hello.models import Category, DemoImage, Product
+from hello.models import Category, Product
 
-allowed_from_ids = [1319577711, 1180957546, 1184998870] # soumya,sumna,alisha
+allowed_from_ids = [1319577711, 1180957546, 1184998870]  # soumya,sumna,alisha
+
 
 class ResponseThen(Response):
     def __init__(self, data, then_callback, **kwargs):
@@ -34,8 +40,10 @@ class ResponseThen(Response):
 
 
 def scan(request):
-    scan_messages()
-    return HttpResponse("ok", status=status.HTTP_200_OK)
+
+    for product_id in [35, 36, 37, 38, 40]:
+        scan_image_urls(product_id=product_id)
+    return HttpResponse("scan")
 
 
 @csrf_exempt
@@ -61,10 +69,10 @@ def respond(body_json):
     update_id = body_json["update_id"]
 
     # if (from_id in allowed_from_ids):
-        # possible hack attempt
-        # we have seen cases when robots tried to send messages
-        # In such cases, dont write to DBs. Ignore.
-        # return
+    # possible hack attempt
+    # we have seen cases when robots tried to send messages
+    # In such cases, dont write to DBs. Ignore.
+    # return
 
     # Extract text provided the incoming message is a text message
     if "text" in body_json["message"]:
@@ -79,29 +87,31 @@ def respond(body_json):
     elif text.lower() == "endzyx":
         send_message(from_id, "Creating product.. please wait!")
         scan_message_res = scan_messages(from_id, update_id, first_name)
-        if (scan_message_res["error"] == 1):
+        if scan_message_res["error"] == 1:
             send_message(from_id, scan_message_res["error_msg"])
             send_message(1184998870, scan_message_res["error_msg"])
-        else:  
+        else:
             product_id = scan_message_res["product_id"]
-            product = Product.objects.filter(id=product_id).values('id','title', 'subcategory__name', 'subcategory__category__name')
-            category = urllib.parse.quote(product[0]['subcategory__category__name'])
-            subcategory = urllib.parse.quote(product[0]['subcategory__name'])
+            product = Product.objects.filter(id=product_id).values(
+                "id", "title", "subcategory__name", "subcategory__category__name",
+            )
+            category = urllib.parse.quote(product[0]["subcategory__category__name"])
+            subcategory = urllib.parse.quote(product[0]["subcategory__name"])
             total_products = Product.objects.all().count()
             total_telegram_msges = TelegramMessage.objects.all().count()
 
             url = "https://alishazyx.herokuapp.com/{}/{}/{}".format(category, subcategory, product_id)
             summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(url, first_name, total_products)
-            details = "{} \n\nCreated by: {}\nTotal Products: {}\nTotal messages: {}".format(url,first_name,total_products,total_telegram_msges)
+            details = "{} \n\nCreated by: {}\nTotal Products: {}\nTotal messages: {}".format(
+                url, first_name, total_products, total_telegram_msges
+            )
 
-            
-            # If product is created by Soumya, 
+            # If product is created by Soumya,
             # don't send message to others as it is most likely for testing purpose
-            if (str(from_id) == str(1184998870)):
+            if str(from_id) == str(1184998870):
                 send_message(1184998870, details)
             else:
-                send_message(1319577711, summary) #suman
-                send_message(1180957546, summary) #alisha
-                send_message(1184998870, details) #soumya
+                send_message(1319577711, summary)  # suman
+                send_message(1180957546, summary)  # alisha
+                send_message(1184998870, details)  # soumya
 
-            

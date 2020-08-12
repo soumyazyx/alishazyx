@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404
 from django.core import serializers
-from hello.models import Category, SubCategory, Product, ProductImage
+from hello.models import Category, SubCategory, Product
 
 
 def index(request):
@@ -14,22 +14,14 @@ def index(request):
 
 
 def sub_category_view(request, categoryname):
-    subcategories_qs = SubCategory.objects.filter(
-        category__name=categoryname
-    ).order_by("sequence")
+    subcategories_qs = SubCategory.objects.filter(category__name=categoryname).order_by("sequence")
     return render(
-        request,
-        "frontend/subcategory.html",
-        {"subcategories": subcategories_qs, "category_name": categoryname},
+        request, "frontend/subcategory.html", {"subcategories": subcategories_qs, "category_name": categoryname},
     )
 
 
 def products_view(request, categoryname, subcategoryname):
-    subcategory = (
-        SubCategory.objects.filter(category__name=categoryname)
-        .filter(name=subcategoryname)
-        .first()
-    )
+    subcategory = SubCategory.objects.filter(category__name=categoryname).filter(name=subcategoryname).first()
     prds = Product.objects.filter(subcategory=subcategory).order_by("-created_on")
     products = {}
     for product in prds:
@@ -58,19 +50,21 @@ def product_view(request, categoryname, subcategoryname, productid):
     product_details = {}
     product_details["sku"] = product.sku
     product_details["title"] = product.title
-    product_details["coverimage"] = transform_url(product.image.url)
+    # product_details["coverimage"] = transform_url(product.image.url)
+    product_details["coverimage"] = product.cover_img_url
     product_details["description"] = product.description
     # Handle additional images
     product_details["images"] = []
-    photos = list(ProductImage.objects.filter(product=product))
-    for photo in photos:
-        product_details["images"].append(transform_url(photo.image.url))
+    for image_url in product.product_img_urls_csv.split(","):
+        product_details["images"].append(image_url)
     return render(
-        request, "frontend/product.html", {
+        request,
+        "frontend/product.html",
+        {
             "productid": productid,
             "category": categoryname,
             "subcategory": subcategoryname,
-            "product_details": product_details
+            "product_details": product_details,
         },
     )
 
@@ -83,9 +77,7 @@ def transform_url(original_url):
     # )
 
     transformed_image_url = re.sub(
-        r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)",
-        r"\1ar_3:4,c_pad,b_auto\2",
-        original_url
+        r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_3:4,c_pad,b_auto\2", original_url
     )
 
     # (https:\/\/res\.cloudinary\.com\/hxjbk5wno\/image\/upload\/)(v.*?)\/(.*)
