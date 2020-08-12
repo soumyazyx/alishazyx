@@ -94,22 +94,14 @@ def respond(body_json):
             summary = "{} \n\nCreated by: {}\nTotal Products: {}".format(url, first_name, total_products)
             details = "{} \n\nCreated by: {}\nTotal Products: {}\nTotal messages: {}".format(url,first_name,total_products,total_telegram_msges)
 
-            send_message(1319577711, summary) #suman
-            send_message(1180957546, summary) #alisha
-            send_message(1184998870, details) #soumya
+            
+            # If product is created by Soumya, 
+            # don't send message to others as it is most likely for testing purpose
+            if (str(from_id) == str(1184998870)):
+                send_message(1184998870, details)
+            else:
+                send_message(1319577711, summary) #suman
+                send_message(1180957546, summary) #alisha
+                send_message(1184998870, details) #soumya
 
-            # Send message to creator of product
-            # send_message(from_id, "New product created. {}".format(url))
-            # alisha=1180957546, suman=1319577711, soumya=1184998870
-            # if (str(from_id) == str(1180957546)):
-            #     send_message(1319577711, summary)
-            #     send_message(1184998870, hack)
-            # elif (str(from_id) == str(1319577711)):
-            #     send_message(1180957546, summary)
-            #     send_message(1184998870, hack)
-            # elif (str(from_id) == str(1184998870)):
-            #     send_message(1180957546, summary)
-            #     send_message(1319577711, summary)
-            #     send_message(1184998870, hack)
-            # else:
-            #     send_message(1184998870, hack)
+            
