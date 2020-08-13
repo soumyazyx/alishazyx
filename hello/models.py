@@ -38,14 +38,13 @@ class SubCategory(models.Model):
 class Product(models.Model):
     sku = models.CharField(max_length=255, blank=True, default="-1")
     title = models.CharField(max_length=255, blank=False)
-    image = models.ImageField(blank=True, upload_to="images/products/")
+    coverimage = models.ImageField(blank=True, upload_to="images/products/")
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, default=3)
     description = models.TextField(blank=True)
     cover_img_url = models.TextField(blank=True, null=True)
     product_img_urls_csv = models.TextField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-
     additional_image_1 = models.ImageField(blank=True, null=True, upload_to="images/products/")
     additional_image_2 = models.ImageField(blank=True, null=True, upload_to="images/products/")
     additional_image_3 = models.ImageField(blank=True, null=True, upload_to="images/products/")

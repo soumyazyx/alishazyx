@@ -50,7 +50,9 @@ def scan_messages(from_id, update_id, first_name):
 
     print("Fetching relevant messages from [{}]..".format(first_name))
     telegram_msges_qs = TelegramMessage.objects.filter(
-        from_id=from_id, update_id__lte=update_id, processing_status__iexact="NEW",
+        from_id=from_id,
+        update_id__lte=update_id,
+        processing_status__iexact="NEW",
     ).order_by("update_id")
     print("Fetching relevant messages from [{}]..Done".format(first_name))
     print("Messages fetched [{}]".format(len(telegram_msges_qs)))
@@ -61,7 +63,11 @@ def scan_messages(from_id, update_id, first_name):
         }
 
     print("Changing processing status from [NEW] to [PROCESSING]..")
-    TelegramMessage.objects.filter(from_id=from_id, update_id__lte=update_id, processing_status__iexact="NEW",).update(
+    TelegramMessage.objects.filter(
+        from_id=from_id,
+        update_id__lte=update_id,
+        processing_status__iexact="NEW",
+    ).update(
         processing_status="PROCESSING"
     )
     print("Changing processing status from [NEW] to [PROCESSING]..Done")
@@ -100,9 +106,9 @@ def scan_messages(from_id, update_id, first_name):
     print("Deleting the telegram messages from database..Done")
 
     # Fetch image url from productimage table and update in product table
-    print("Fetching image urls and updating product table..")
+    # print("Fetching image urls and updating product table..")
     scan_image_urls(save_products_res["product_id"])
-    print("Fetching image urls and updating product table..Done")
+    # print("Fetching image urls and updating product table..Done")
 
     if save_products_res["error"] == 1:
         return {"error": 1, "error_msg": save_products_res["error_msg"]}
@@ -155,36 +161,85 @@ def save_products(all_blocks):
     # Each block represents a new product
     for block in all_blocks:
         try:
-            title = block["title"]
             desc = block["desc"]
+            title = block["title"]
             subcategory_id = block["subcategory_id"]
-            # Handle photos
-            photos = block["photos"]
-            if len(photos) == 0:
-                photo_url = default_photo_url
-            else:
-                photo_id = photos.pop(0)
-                photo_url = get_photo_url_from_id(photo_id)
-            photo_obj = get_photo_from_url(photo_url)
 
             print("Creating product with title[{}]..".format(title))
             product = Product()
             product.title = title
             product.description = desc
             product.subcategory = SubCategory.objects.get(id=subcategory_id)
-            product.image.save("logo.png", photo_obj, save=False)
-            product.save()
-            print("Creating product with title[{}]..Done [productid={}]".format(title, product.id))
-            print("Adding additional photos for product(if any)..")
-            for photo_id in photos:
+
+            # Handle cover image
+            photos = block["photos"]
+            if len(photos) == 0:
+                cover_photo_url = default_photo_url
+                cover_photo_obj = get_photo_from_url(cover_photo_url)
+                product.coverimage.save("logo.png", cover_photo_obj, save=False)
+            else:
+                cover_photo_id  = photos.pop(0)
+                cover_photo_url = get_photo_url_from_id(cover_photo_id)
+                cover_photo_obj = get_photo_from_url(cover_photo_url)
+                product.coverimage.save("logo.png", cover_photo_obj, save=False)
+
+            # Handle additional images - WORST POSSIBLE IMPLEMENTATION
+            for index, photo_id in enumerate(photos, start=1):
                 photo_url = get_photo_url_from_id(photo_id)
                 photo_obj = get_photo_from_url(photo_url)
-                productimage = ProductImage()
-                productimage.product = product
-                productimage.image.save("tiu.png", photo_obj, save=False)
-                productimage.save()
-            print("Adding additional photos for product(if any)..Done")
-            print("--")
+                if(index == 1):  product.additional_image_1.save("logo.jpg", photo_obj, save=False)        
+                if(index == 2):  product.additional_image_2.save("logo.jpg", photo_obj, save=False)        
+                if(index == 3):  product.additional_image_3.save("logo.jpg", photo_obj, save=False)        
+                if(index == 4):  product.additional_image_4.save("logo.jpg", photo_obj, save=False)        
+                if(index == 5):  product.additional_image_5.save("logo.jpg", photo_obj, save=False)        
+                if(index == 6):  product.additional_image_6.save("logo.jpg", photo_obj, save=False)        
+                if(index == 7):  product.additional_image_7.save("logo.jpg", photo_obj, save=False)        
+                if(index == 8):  product.additional_image_8.save("logo.jpg", photo_obj, save=False)        
+                if(index == 9):  product.additional_image_9.save("logo.jpg", photo_obj, save=False)        
+                if(index == 10): product.additional_image_10.save("logo.jpg", photo_obj, save=False)        
+                if(index == 11): product.additional_image_11.save("logo.jpg", photo_obj, save=False)        
+                if(index == 12): product.additional_image_12.save("logo.jpg", photo_obj, save=False)        
+                if(index == 13): product.additional_image_13.save("logo.jpg", photo_obj, save=False)        
+                if(index == 14): product.additional_image_14.save("logo.jpg", photo_obj, save=False)        
+                if(index == 15): product.additional_image_15.save("logo.jpg", photo_obj, save=False)        
+                if(index == 16): product.additional_image_16.save("logo.jpg", photo_obj, save=False)        
+                if(index == 17): product.additional_image_17.save("logo.jpg", photo_obj, save=False)        
+                if(index == 18): product.additional_image_18.save("logo.jpg", photo_obj, save=False)        
+                if(index == 19): product.additional_image_19.save("logo.jpg", photo_obj, save=False)        
+                if(index == 20): product.additional_image_20.save("logo.jpg", photo_obj, save=False)        
+                if(index == 21): product.additional_image_21.save("logo.jpg", photo_obj, save=False)        
+                if(index == 22): product.additional_image_22.save("logo.jpg", photo_obj, save=False)        
+                if(index == 23): product.additional_image_23.save("logo.jpg", photo_obj, save=False)        
+                if(index == 24): product.additional_image_24.save("logo.jpg", photo_obj, save=False)        
+                if(index == 25): product.additional_image_25.save("logo.jpg", photo_obj, save=False)        
+                if(index == 26): product.additional_image_26.save("logo.jpg", photo_obj, save=False)        
+                if(index == 27): product.additional_image_27.save("logo.jpg", photo_obj, save=False)        
+                if(index == 28): product.additional_image_28.save("logo.jpg", photo_obj, save=False)        
+                if(index == 29): product.additional_image_29.save("logo.jpg", photo_obj, save=False)        
+                if(index == 30): product.additional_image_30.save("logo.jpg", photo_obj, save=False)        
+                if(index == 31): product.additional_image_31.save("logo.jpg", photo_obj, save=False)        
+                if(index == 32): product.additional_image_32.save("logo.jpg", photo_obj, save=False)        
+                if(index == 33): product.additional_image_33.save("logo.jpg", photo_obj, save=False)        
+                if(index == 34): product.additional_image_34.save("logo.jpg", photo_obj, save=False)        
+                if(index == 35): product.additional_image_35.save("logo.jpg", photo_obj, save=False)        
+                if(index == 36): product.additional_image_36.save("logo.jpg", photo_obj, save=False)        
+                if(index == 37): product.additional_image_37.save("logo.jpg", photo_obj, save=False)        
+                if(index == 38): product.additional_image_38.save("logo.jpg", photo_obj, save=False)        
+                if(index == 39): product.additional_image_39.save("logo.jpg", photo_obj, save=False)        
+                if(index == 40): product.additional_image_40.save("logo.jpg", photo_obj, save=False)        
+                if(index == 41): product.additional_image_41.save("logo.jpg", photo_obj, save=False)        
+                if(index == 42): product.additional_image_42.save("logo.jpg", photo_obj, save=False)        
+                if(index == 43): product.additional_image_43.save("logo.jpg", photo_obj, save=False)        
+                if(index == 44): product.additional_image_44.save("logo.jpg", photo_obj, save=False)        
+                if(index == 45): product.additional_image_45.save("logo.jpg", photo_obj, save=False)        
+                if(index == 46): product.additional_image_46.save("logo.jpg", photo_obj, save=False)        
+                if(index == 47): product.additional_image_47.save("logo.jpg", photo_obj, save=False)        
+                if(index == 48): product.additional_image_48.save("logo.jpg", photo_obj, save=False)        
+                if(index == 49): product.additional_image_49.save("logo.jpg", photo_obj, save=False)        
+                if(index == 50): product.additional_image_50.save("logo.jpg", photo_obj, save=False)        
+
+            product.save()
+            print("Creating product with title[{}]..Done [productid={}]".format(title, product.id))
             return {"error": 0, "product_id": product.id}
         except Exception as e:
             print("Exception occured:")
@@ -339,7 +394,7 @@ def scan_image_urls(product_id):
     # Get the product concerned from DB
     product = Product.objects.filter(id=product_id).first()
     # Handle product cover image
-    product.cover_img_url = product.image.url
+    product.cover_img_url = product.coverimage.url
     # Handle product additional images
     product_images_urls = []
     for record in ProductImage.objects.filter(product_id=product_id):

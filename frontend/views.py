@@ -4,8 +4,9 @@ import time
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404
+from contextlib import suppress
 from django.core import serializers
-from hello.models import Category, SubCategory, Product
+from hello.models import Category, SubCategory, Product, ProductImage
 
 
 def index(request):
@@ -31,7 +32,7 @@ def products_view(request, categoryname, subcategoryname):
         products[product_id]["title"] = product.title
         products[product_id]["description"] = product.description
         products[product_id]["images"] = []
-        products[product_id]["images"].append(product.image.url)
+        products[product_id]["images"].append(product.coverimage.url)
     return render(
         request,
         "frontend/products.html",
@@ -50,13 +51,69 @@ def product_view(request, categoryname, subcategoryname, productid):
     product_details = {}
     product_details["sku"] = product.sku
     product_details["title"] = product.title
-    # product_details["coverimage"] = transform_url(product.image.url)
     product_details["coverimage"] = transform_url(product.cover_img_url)
     product_details["description"] = product.description
     # Handle additional images
+    # During initial implementation, we added each image as a record in ProductImage table.
+    # however, we have a 10K record limit imposed by heroku - so, we then started adding image colomns in Product table ieself
+    # So, for backward compatibility, we need to pull images from Product table, as well as ProductImage table
     product_details["images"] = []
-    for image_url in product.product_img_urls_csv.split(","):
-        product_details["images"].append(transform_url(image_url))
+    # 1. Pull images from ProductImage table
+    photos = list(ProductImage.objects.filter(product=product))
+    for photo in photos:
+        product_details["images"].append(transform_url(photo.image.url))
+    # 2. Pull images from product table,. the columns are named as additional_image_1 through additional_image_50
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_1.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_2.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_3.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_4.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_5.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_6.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_7.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_8.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_9.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_10.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_11.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_12.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_13.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_14.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_15.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_16.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_17.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_18.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_19.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_20.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_21.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_22.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_23.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_24.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_25.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_26.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_27.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_28.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_29.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_30.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_31.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_32.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_33.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_34.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_35.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_36.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_37.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_38.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_39.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_40.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_41.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_42.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_43.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_44.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_45.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_46.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_47.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_48.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_49.url))
+    with suppress(ValueError):product_details["images"].append(transform_url(product.additional_image_50.url))
+
     return render(
         request,
         "frontend/product.html",

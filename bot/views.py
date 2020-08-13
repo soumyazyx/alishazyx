@@ -12,7 +12,6 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_twilio.decorators import twilio_view
 from lib.bot.bot_utils import (
-    get_categories,
     get_sub_categories,
     save_telegram_message,
     scan_messages,
@@ -27,6 +26,7 @@ from bot.models import TelegramMessage
 from hello.models import Category, Product
 
 allowed_from_ids = [1319577711, 1180957546, 1184998870]  # soumya,sumna,alisha
+blocked_from_ids = [666034122]
 
 
 class ResponseThen(Response):
@@ -48,31 +48,32 @@ def scan(request):
 
 @csrf_exempt
 def telegram_handler(request):
+
     print("Telegram message received")
     message = request.body.decode("utf-8")
     body_json = json.loads(message)
     chat_id = body_json["message"]["chat"]["id"]
-    # Save message to DB
-    save_telegram_message_res = save_telegram_message(message=message)
-    if save_telegram_message_res == -1:
-        send_message(chat_id, "Internal error occured!")
-        return HttpResponse(status=400)
+
+    # Dont save if the message is from blocked list
+    if chat_id in blocked_from_ids:
+        pass
     else:
-        thread_respond = threading.Thread(target=respond, args=(body_json,))
-        thread_respond.start()
-        return HttpResponse(status=200)
+        # Save message to DB
+        save_telegram_message_res = save_telegram_message(message=message)
+        if save_telegram_message_res == -1:
+            send_message(chat_id, "Internal error occured!")
+            return HttpResponse(status=400)
+        else:
+            thread_respond = threading.Thread(target=respond, args=(body_json,))
+            thread_respond.start()
+            return HttpResponse(status=200)
 
 
 def respond(body_json):
+
     from_id = body_json["message"]["from"]["id"]
     first_name = body_json["message"]["from"]["first_name"]
     update_id = body_json["update_id"]
-
-    # if (from_id in allowed_from_ids):
-    # possible hack attempt
-    # we have seen cases when robots tried to send messages
-    # In such cases, dont write to DBs. Ignore.
-    # return
 
     # Extract text provided the incoming message is a text message
     if "text" in body_json["message"]:
@@ -106,12 +107,10 @@ def respond(body_json):
                 url, first_name, total_products, total_telegram_msges
             )
 
-            # If product is created by Soumya,
-            # don't send message to others as it is most likely for testing purpose
+            # If from_id=Soumya,don't send message as it is most likely for testing purpose
             if str(from_id) == str(1184998870):
                 send_message(1184998870, details)
             else:
                 send_message(1319577711, summary)  # suman
                 send_message(1180957546, summary)  # alisha
                 send_message(1184998870, details)  # soumya
-
