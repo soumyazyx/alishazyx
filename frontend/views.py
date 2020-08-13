@@ -51,12 +51,12 @@ def product_view(request, categoryname, subcategoryname, productid):
     product_details["sku"] = product.sku
     product_details["title"] = product.title
     # product_details["coverimage"] = transform_url(product.image.url)
-    product_details["coverimage"] = product.cover_img_url
+    product_details["coverimage"] = transform_url(product.cover_img_url)
     product_details["description"] = product.description
     # Handle additional images
     product_details["images"] = []
     for image_url in product.product_img_urls_csv.split(","):
-        product_details["images"].append(image_url)
+        product_details["images"].append(transform_url(image_url))
     return render(
         request,
         "frontend/product.html",
