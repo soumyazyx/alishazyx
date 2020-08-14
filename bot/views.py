@@ -53,10 +53,11 @@ def telegram_handler(request):
     message = request.body.decode("utf-8")
     body_json = json.loads(message)
     chat_id = body_json["message"]["chat"]["id"]
-
+    first_name = body_json["message"]["from"]["first_name"]
     # Dont save if the message is from blocked list
     if chat_id in blocked_from_ids:
-        pass
+        print("Rejecting the message as message is recieved from [{}]".format(first_name))
+        return HttpResponse(status=200)
     else:
         # Save message to DB
         save_telegram_message_res = save_telegram_message(message=message)
