@@ -1,12 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
   {% include 'frontend/head.html' %}
   <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}" type="text/css">
-  <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}" type="text/css">
   <link rel="stylesheet" href="{% static 'frontend/css/tiu.css' %}" type="text/css">
   <body>
+
     {% include 'frontend/header_section.html' %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Home</li>
+      </ol>
+    </nav>
     <section class="">
       <div class="container-fluid">
         <div class="row">
@@ -14,7 +19,6 @@
             <div class="col-lg-2 col-md-3 col-sm-4 col-6">
               <a href="/{{category.name}}">
                 <figure class="figure">
-                  <!-- <img loading="lazy" src="{{category.image.url}}" class="figure-img img-fluid rounded" alt="{{category.name}}"> -->
                   <img data-src="{{category.image.url}}" class="lazyload figure-img img-fluid rounded" alt="{{category.name}}">
                   <figcaption class="figure-caption text-center">{{category.name}}</figcaption>
                 </figure> 
