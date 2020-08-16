@@ -133,8 +133,11 @@ def transform_url(original_url):
     #     original_url
     # )
 
+    # transformed_image_url = re.sub(
+    #     r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_3:4,c_pad,b_auto\2", original_url
+    # )
     transformed_image_url = re.sub(
-        r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_3:4,c_pad,b_auto\2", original_url
+        r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_3:4,c_pad\2", original_url
     )
 
     # (https:\/\/res\.cloudinary\.com\/hxjbk5wno\/image\/upload\/)(v.*?)\/(.*)
