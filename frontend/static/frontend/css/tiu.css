@@ -2,15 +2,20 @@
  Banner Section
 -----------------------*/
 body {
-  /* font-family: 'Varela Round', sans-serif; */
-  font-family: 'Prompt', sans-serif;
-  /* font-family: 'Roboto', sans-serif;
-  font-family: 'Roboto Slab', serif;
-  font-family: 'Baloo Tamma 2', cursive; */
+  font-family: 'Varela Round', sans-serif;
+  /* font-family: 'Prompt', sans-serif; */
+  /* font-family: 'Roboto', sans-serif; */
+  /* font-family: 'Roboto Slab', serif; */
+  /* font-family: 'Baloo Tamma 2', cursive; */
   /* font-family: 'Open Sans', sans-serif; */
   /* background: #f8f9fa; */
   color: rgba(0,0,0,.9)
   
+}
+
+.navbar-light .navbar-brand {
+  color: #ff0087;
+  font-weight: 600;
 }
 
 .breadcrumb {
