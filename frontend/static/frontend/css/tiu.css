@@ -1,16 +1,19 @@
-/*---------------------
- Banner Section
------------------------*/
+@media (min-width: 600px) {
+  /* desktop screen */
+}
+@media (max-width: 600px) {
+  /* mobile screen */
+}
+
 body {
-  font-family: 'Varela Round', sans-serif;
+  font-family: "Varela Round", sans-serif;
   /* font-family: 'Prompt', sans-serif; */
   /* font-family: 'Roboto', sans-serif; */
   /* font-family: 'Roboto Slab', serif; */
   /* font-family: 'Baloo Tamma 2', cursive; */
   /* font-family: 'Open Sans', sans-serif; */
   /* background: #f8f9fa; */
-  color: rgba(0,0,0,.9)
-  
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .navbar-light .navbar-brand {
@@ -20,19 +23,18 @@ body {
 
 .breadcrumb {
   background: transparent;
-  font-size: .75rem;;
+  font-size: 0.75rem;
   display: block !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  
 }
 
 .breadcrumb .breadcrumb-item {
   display: inline;
 }
 
-.breadcrumb .breadcrumb-item a{
+.breadcrumb .breadcrumb-item a {
   color: unset;
 }
 
@@ -41,18 +43,9 @@ ol.breadcrumb {
   padding-top: 1rem;
 }
 
-.bg-light{
-  background: #eaeaea !important;
+.bg-light-custom {
+  background: #ededed !important;
 }
-@media (min-width: 600px) {
-  /* desktop screen */
-  
-}
-
-@media (max-width: 600px) {
-  /* mobile screen */
-}
-
 
 .figure img {
   height: 150px;
@@ -61,87 +54,9 @@ ol.breadcrumb {
   object-position: top center;
 }
 
-
 .figure figcaption {
   font-size: 100%;
   font-weight: 400;
-  color: rgba(0,0,0,.9)
-  
+  color: rgba(0, 0, 0, 0.9);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.product-desc {
-  border-radius: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  padding: 10px 0;
-  border-top: 1px solid #eee;
-  margin-top: 10px;
-  min-height: 150px;
-  max-height: 150px;
-  overflow: auto;
-}
-.owl-carousel .active span {
-  width: 10px;
-  height: 10px;
-  margin: 5px 7px;
-  background: #f40181 !important;
-  display: block;
-  -webkit-backface-visibility: visible;
-  -webkit-transition: opacity 200ms ease;
-  -moz-transition: opacity 200ms ease;
-  -ms-transition: opacity 200ms ease;
-  -o-transition: opacity 200ms ease;
-  transition: opacity 200ms ease;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  border-radius: 30px;
-}
-
-.breadcrumb-text {
-  padding-bottom: 5px;
-  border: none;
-}
-
-
-
-[data-toggle="collapse"] .fa:before {
-  /* content: "\f139"; */
-  content: "\f077";
-}
-
-[data-toggle="collapse"].collapsed .fa:before {
-  /* content: "\f13a"; */
-  content: "\f078";
-}
-
-.logo {
-  padding: 10px 0;
-}
-
-.btn .badge {
-  padding: 5px;
-  font-size: 90%;
-  background: #eee;
-  /* color: white; */
-  /* background: #ccc; */
-}
-
-.col:not(:last-child) .inner {
-  margin: 2px;
-}
-    
