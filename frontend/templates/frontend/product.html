@@ -44,7 +44,9 @@
         font-size: 1.25rem;
         font-weight: 600;
       }
-      
+      b {
+        color: rgba(0,0,0,.7) !important;
+      }      
       .pd-desc {
         color: rgba(0,0,0,.5);
         max-width: 40ch;
@@ -111,6 +113,9 @@
                     {{product_details.title}}
                     <a href="#" class="heart-icon"></a>
                   </div>
+                  <br>
+                  <b>Decription</b>
+                  <hr>
                   <div class="pd-desc">
                     <p>{{product_details.description|linebreaks}}</p>
                     <a class="btn btn-sm btn-success text-white d-none d-sm-block" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp &nbsp; &nbsp;<i class="fa fa-inverse fa-whatsapp"></i></a>
