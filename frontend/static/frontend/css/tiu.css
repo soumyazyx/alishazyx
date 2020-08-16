@@ -6,8 +6,8 @@
 }
 
 body {
-  font-family: "Varela Round", sans-serif;
-  /* font-family: 'Prompt', sans-serif; */
+  /* font-family: "Varela Round", sans-serif; */
+  font-family: 'Prompt', sans-serif;
   /* font-family: 'Roboto', sans-serif; */
   /* font-family: 'Roboto Slab', serif; */
   /* font-family: 'Baloo Tamma 2', cursive; */
@@ -18,7 +18,7 @@ body {
 
 .navbar-light .navbar-brand {
   color: #ff0087;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 .breadcrumb {
@@ -42,11 +42,6 @@ ol.breadcrumb {
   padding-bottom: 0;
   padding-top: 1rem;
 }
-
-.bg-light-custom {
-  background: #ededed !important;
-}
-
 .figure img {
   height: 150px;
   width: 100%;

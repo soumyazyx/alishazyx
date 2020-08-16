@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab:wght@100;200;300;400;500;531;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
-    
+    <link rel="icon" href="https://res.cloudinary.com/hxjbk5wno/image/upload/v1597577063/favicon/favicon-32x32_lmrtrz.png"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'frontend/css/tiu.css' %}" type="text/css">
@@ -34,22 +34,23 @@
       .product-shop.page-details {
         padding: 0 !important;
       }
-      .pd-title {
+      
+      .bg-product-footer {
+        background: #FBEBD8 !important;
+      }
+
+      .pd-title, .pd-title-mobile {
         color: #ff0087;
         font-size: 1.25rem;
         font-weight: 600;
       }
-      .pd-title-mobile {
-        color: #ff0087;
-        font-weight: 600;
-        font-size: 1.25rem;
-      }
-       
+      
       .pd-desc {
         color: rgba(0,0,0,.5);
         max-width: 40ch;
         line-height: 2rem;
       }
+      
       .carousel .item img {
         max-height: 768px;
         min-width: auto;
@@ -59,13 +60,10 @@
       .carousel-control-prev {
         filter: invert(100%);
       }
+      
       #carouselControls {
         box-shadow: 0 0 0 1px #eee;
       }
-      footer {
-        background: white;
-      }
-
     </style>
   </head>
   <body>
@@ -113,7 +111,6 @@
                     {{product_details.title}}
                     <a href="#" class="heart-icon"></a>
                   </div>
-                  <hr>
                   <div class="pd-desc">
                     <p>{{product_details.description|linebreaks}}</p>
                     <a class="btn btn-sm btn-success text-white d-none d-sm-block" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp &nbsp; &nbsp;<i class="fa fa-inverse fa-whatsapp"></i></a>
@@ -130,7 +127,7 @@
     <!-- Product Shop Section End -->
     <br><br><br><br><br><br>
     
-    <footer class="footer fixed-bottom bg-light-custom d-block d-sm-none" style="border-top: 10px solid white">
+    <footer class="footer fixed-bottom bg-product-footer d-block d-sm-none" style="border-top: 10px solid white">
       <div class="container p-0 text-center">
         <div class="pd-title-mobile">
           {{product_details.title}}
