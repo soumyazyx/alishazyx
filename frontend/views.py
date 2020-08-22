@@ -190,22 +190,28 @@ def transform_url(original_url):
 
 def beautify_product_description(description):
     print(description)
-    formatted_text = '<dl class="row">'
-    for line in description.split("\n"):
+    # https://getbootstrap.com/docs/4.0/content/typography/#description-list-alignment
+    description_list_text = '<dl class="row">'
+    # Texts which doesnt follow a:b format
+    else_text = ""
 
+    for line in description.split("\n"):
         if "Proof of Safe" in line:
-            pass
+            else_text += line + "\n"
         elif "https://" in line:
-            formatted_text += line + "\n"
+            else_text += line + "\n"
         elif "http://" in line:
-            formatted_text += line + "\n"
+            else_text += line + "\n"
         elif ":" in line:
             # Blouse: Running Blouse
             # a: b
             line = re.sub(':+', ':', line)
             a = line.split(":", 1)[0].strip()
             b = line.split(":", 1)[1].strip()
-            formatted_text += "<dt class='col-sm-6'>{}</dt><dd class='col-sm-6'>{}</dd>".format(a, b)
-    formatted_text += "</dl>"
-    print(formatted_text)
-    return formatted_text
+            if ((not a) or (not b)):
+                else_text += line + "\n"
+            else:
+                description_list_text += "<dt class='col-sm-6'>{}</dt><dd class='col-sm-6'>{}</dd>".format(a, b)
+    description_list_text += "</dl>"
+
+    return description_list_text + "\n" + else_text
