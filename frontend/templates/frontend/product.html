@@ -40,7 +40,7 @@
       }
       .pd-desc {
         max-width: 40ch;
-        line-height: 2rem;
+        
       }
       .carousel-control-next,
       .carousel-control-prev {
@@ -48,6 +48,10 @@
       }
       #carouselControls {
         box-shadow: 0 0 0 1px #eee;
+      }
+      .underline {
+        text-decoration: underline;
+        text-decoration-color: #ddd;
       }
       @media (min-width: 600px) {
         /* desktop screen */
@@ -108,10 +112,11 @@
                 <a class="btn btn-sm btn-light btn-outline-success text-success" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp <i class="fa fa-inverse fa-whatsapp text-success"></i></a>
               </div>
               <br>
-              <b class="text-muted">Description</b>
+              <!-- <b class="text-muted">Description</b> -->
               <div class="pd-desc text-muted">
-                {{product_details.description|linebreaks|urlize}}
+                {{product_details.description|safe|urlize}}
               </div>
+
             </div>
           </div>
         </div>
@@ -119,7 +124,7 @@
     </section>
     <!-- Product Shop Section End -->
     <!-- sticky footer section begin -->
-    <br><br>
+    <br><br><br><br><br>
     <footer class="footer fixed-bottom bg-product-footer show_on_mobile" style="border-top: 10px solid white">
       <div class="container p-0 text-center">
         <div class="pd-title-mobile">
