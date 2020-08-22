@@ -189,10 +189,16 @@ def transform_url(original_url):
 
 
 def beautify_product_description(description):
+    print(description)
     formatted_text = '<dl class="row">'
     for line in description.split("\n"):
+
         if "Proof of Safe" in line:
             pass
+        elif "https://" in line:
+            formatted_text += line + "\n"
+        elif "http://" in line:
+            formatted_text += line + "\n"
         elif ":" in line:
             # Blouse: Running Blouse
             # a: b
