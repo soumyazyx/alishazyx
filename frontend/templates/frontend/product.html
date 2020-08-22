@@ -26,15 +26,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab:wght@100;200;300;400;500;531;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
-    <link href="https://res.cloudinary.com/hxjbk5wno/image/upload/v1597577063/favicon/favicon-32x32_lmrtrz.png" rel="icon"> 
+    <link href="https://res.cloudinary.com/hxjbk5wno/image/upload/v1597577063/favicon/favicon-32x32_lmrtrz.png" rel="icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" rel="stylesheet">
     <link href="{% static 'frontend/css/tiu.css' %}" type="text/css" rel="stylesheet">
     <style>
+      hr {
+        margin: 0rem;
+      }
       .product-shop.page-details {
         padding: 0 !important;
       }
-      
+
       .bg-product-footer {
         background: #FBEBD8 !important;
       }
@@ -42,30 +45,42 @@
       .pd-title, .pd-title-mobile {
         color: #ff0087;
         font-size: 1.25rem;
-        font-weight: 600;
+
       }
-      b {
-        color: rgba(0,0,0,.7) !important;
-      }      
       .pd-desc {
-        color: rgba(0,0,0,.5);
         max-width: 40ch;
         line-height: 2rem;
       }
-      
-      .carousel .item img {
-        max-height: 768px;
-        min-width: auto;
-      }
-      
+
+
       .carousel-control-next,
       .carousel-control-prev {
         filter: invert(100%);
       }
-      
+
       #carouselControls {
         box-shadow: 0 0 0 1px #eee;
       }
+
+      @media (min-width: 600px) {
+        /* desktop screen */
+        img.d-block.w-100 {
+          max-height:70vh;
+          object-fit: contain;
+        }
+        .pd-title {
+          text-align: left !important;
+        }
+
+      }
+      @media (max-width: 600px) {
+        /* mobile screen */
+
+      }
+
+
+
+
     </style>
   </head>
   <body>
@@ -77,15 +92,15 @@
         <li class="breadcrumb-item"><a href="/{{category}}/{{subcategory}}">{{subcategory}}</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{product_details.title}}</li>
       </ol>
-      
+
     </nav>
-    
+
     <!-- Product Shop Section Begin -->
 
     <section class="product-shop spad page-details">
-      <div class="container-fluid">
-        <div class="row">
-              <div class="col-lg-5 offset-lg-1 col-md-5 offset-md-1 col-sm-6" style="padding:0">
+      <div class="container-fluid " style="max-width: 1000px;">
+        <div class="row justify-content-center">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding:0">
                 <div id="carouselControls" class="carousel slide" data-ride="carousel">
                   <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -107,18 +122,17 @@
                   </a>
                 </div>
               </div>
-              <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="product-details">
-                  <div class="pd-title text-center d-none d-sm-block">
+                  <div class="pd-title d-none show_on_desktop">
                     {{product_details.title}}
-                    <a href="#" class="heart-icon"></a>
+                    <br><a class="btn btn-sm btn-light btn-outline-success text-success" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp <i class="fa fa-inverse fa-whatsapp text-success"></i></a>
                   </div>
                   <br>
-                  <b>Description</b>
-                  <hr>
-                  <div class="pd-desc">
-                    <p>{{product_details.description|linebreaks|urlize}}</p>
-                    <a class="btn btn-sm btn-success text-white d-none d-sm-block" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp &nbsp; &nbsp;<i class="fa fa-inverse fa-whatsapp"></i></a>
+                  <b class="text-muted">Description</b>
+                  <div class="pd-desc text-muted">
+                    {{product_details.description|linebreaks|urlize}}
+
                   </div>
                 </div>
               </div>
@@ -130,8 +144,8 @@
     </section>
     <!-- Product Shop Section End -->
     <br><br><br><br><br><br>
-    
-    <footer class="footer fixed-bottom bg-product-footer d-block d-sm-none" style="border-top: 10px solid white">
+
+    <footer class="footer fixed-bottom bg-product-footer show_on_mobile" style="border-top: 10px solid white">
       <div class="container p-0 text-center">
         <div class="pd-title-mobile">
           {{product_details.title}}
@@ -163,10 +177,14 @@
         // mobile device
         // $("#whatsapp_mobile").attr("href", mobile_href);
         // $("#whatsapp_mobile").removeClass("d-none");
+        $(".show_on_mobile").removeClass("d-none");
+        $(".show_on_desktop").addClass("d-none");
       } else {
         // non-mobile device
         // $("#whatsapp_nonmobile").attr("href", nonmobile_href);
         // $("#whatsapp_nonmobile").removeClass("d-none");
+        $(".show_on_mobile").addClass("d-none");
+        $(".show_on_desktop").removeClass("d-none");
       }
     });
 
