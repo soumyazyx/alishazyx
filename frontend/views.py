@@ -189,7 +189,6 @@ def transform_url(original_url):
 
 
 def beautify_product_description(description):
-    print(description)
     # https://getbootstrap.com/docs/4.0/content/typography/#description-list-alignment
     description_list_text = '<dl class="row">'
     # Texts which doesnt follow a:b format
@@ -214,4 +213,4 @@ def beautify_product_description(description):
                 description_list_text += "<dt class='col-sm-6'>{}</dt><dd class='col-sm-6'>{}</dd>".format(a, b)
     description_list_text += "</dl>"
 
-    return description_list_text + "\n" + else_text
+    return description_list_text + "<br>" + else_text
