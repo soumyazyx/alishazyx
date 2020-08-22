@@ -26,7 +26,7 @@ from bot.models import TelegramMessage
 from hello.models import Category, Product
 
 allowed_from_ids = [1319577711, 1180957546, 1184998870]  # soumya,sumna,alisha
-blocked_from_ids = [666034122]
+blocked_from_ids = [666034122,930874376]
 
 
 class ResponseThen(Response):
