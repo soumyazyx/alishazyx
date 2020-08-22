@@ -10,7 +10,6 @@
       gtag('js', new Date());
       gtag('config', 'UA-173007973-1');
     </script>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="keywords" content="Alisha, supermarket, ecommerce, shopping, cart">
@@ -20,12 +19,7 @@
     <meta property="og:image"       content="{{product_details.coverimage}}"/>
     <meta property="og:title"       content="{{product_details.title}}"/>
     <title>Alisha's super market</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet" >
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab:wght@100;200;300;400;500;531;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <link href="https://res.cloudinary.com/hxjbk5wno/image/upload/v1597577063/favicon/favicon-32x32_lmrtrz.png" rel="icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" rel="stylesheet">
@@ -37,31 +31,24 @@
       .product-shop.page-details {
         padding: 0 !important;
       }
-
       .bg-product-footer {
         background: #FBEBD8 !important;
       }
-
       .pd-title, .pd-title-mobile {
         color: #ff0087;
         font-size: 1.25rem;
-
       }
       .pd-desc {
         max-width: 40ch;
         line-height: 2rem;
       }
-
-
       .carousel-control-next,
       .carousel-control-prev {
         filter: invert(100%);
       }
-
       #carouselControls {
         box-shadow: 0 0 0 1px #eee;
       }
-
       @media (min-width: 600px) {
         /* desktop screen */
         img.d-block.w-100 {
@@ -71,16 +58,10 @@
         .pd-title {
           text-align: left !important;
         }
-
       }
       @media (max-width: 600px) {
         /* mobile screen */
-
       }
-
-
-
-
     </style>
   </head>
   <body>
@@ -92,59 +73,53 @@
         <li class="breadcrumb-item"><a href="/{{category}}/{{subcategory}}">{{subcategory}}</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{product_details.title}}</li>
       </ol>
-
     </nav>
-
     <!-- Product Shop Section Begin -->
-
     <section class="product-shop spad page-details">
-      <div class="container-fluid " style="max-width: 1000px;">
+      <div class="container-fluid max-width-1k" style="max-width: 1000px;">
         <div class="row justify-content-center">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding:0">
-                <div id="carouselControls" class="carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <img class="d-block w-100" src="{{product_details.coverimage}}">
-                    </div>
-                    {% for image in product_details.images %}
-                      <div class="carousel-item">
-                        <img class="d-block w-100" src="{{image}}">
-                      </div>
-                    {% endfor %}
-                  </div>
-                  <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                  </a>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding:0">
+            <div id="carouselControls" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img class="d-block w-100" src="{{product_details.coverimage}}">
                 </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="product-details">
-                  <div class="pd-title d-none show_on_desktop">
-                    {{product_details.title}}
-                    <br><a class="btn btn-sm btn-light btn-outline-success text-success" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp <i class="fa fa-inverse fa-whatsapp text-success"></i></a>
-                  </div>
-                  <br>
-                  <b class="text-muted">Description</b>
-                  <div class="pd-desc text-muted">
-                    {{product_details.description|linebreaks|urlize}}
-
-                  </div>
+                {% for image in product_details.images %}
+                <div class="carousel-item">
+                  <img class="d-block w-100" src="{{image}}">
                 </div>
+                {% endfor %}
               </div>
-
-            <!-- </div> -->
-          <!-- </div> -->
+              <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="product-details">
+              <div class="pd-title d-none show_on_desktop">
+                {{product_details.title}}
+                <br>
+                <a class="btn btn-sm btn-light btn-outline-success text-success" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp <i class="fa fa-inverse fa-whatsapp text-success"></i></a>
+              </div>
+              <br>
+              <b class="text-muted">Description</b>
+              <div class="pd-desc text-muted">
+                {{product_details.description|linebreaks|urlize}}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
     <!-- Product Shop Section End -->
-    <br><br><br><br><br><br>
-
+    <!-- sticky footer section begin -->
+    <br><br>
     <footer class="footer fixed-bottom bg-product-footer show_on_mobile" style="border-top: 10px solid white">
       <div class="container p-0 text-center">
         <div class="pd-title-mobile">
@@ -154,20 +129,18 @@
         </div>
       </div>
     </footer>
-
-    {% include 'frontend/footer.html' %}
+    <!-- sticky footer section end -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
     <script>
     $(document).ready(function() {
+      // Handle carousel
       $('.carousel').carousel({
-        interval: 2000,
         wrap: false
-      });
-
-      // We need to handle "share on whatsapp" functionality differently
-      // for mobile and non-mobile users
+      });      
+      // Handle whatsapp share 
+      // "share on whatsapp" works differently for mobile and non-mobile devices
       text = "Hi Alisha. Looks interesting! " +  window.location.href;
       mobile_href    = encodeURI("https://api.whatsapp.com/send?text=" + text);
       nonmobile_href = encodeURI("https://web.whatsapp.com/send?text=" + text);
@@ -175,19 +148,14 @@
       $("#whatsapp_nonmobile").attr("href", nonmobile_href);
       if (WURFL.is_mobile === true && WURFL.form_factor === "Smartphone") {
         // mobile device
-        // $("#whatsapp_mobile").attr("href", mobile_href);
-        // $("#whatsapp_mobile").removeClass("d-none");
         $(".show_on_mobile").removeClass("d-none");
         $(".show_on_desktop").addClass("d-none");
       } else {
         // non-mobile device
-        // $("#whatsapp_nonmobile").attr("href", nonmobile_href);
-        // $("#whatsapp_nonmobile").removeClass("d-none");
         $(".show_on_mobile").addClass("d-none");
         $(".show_on_desktop").removeClass("d-none");
       }
     });
-
     </script>
   </body>
 </html>
