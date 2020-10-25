@@ -55,13 +55,6 @@ nav.fixed-top,
   color: unset;
 }
 
-.figure img {
-  height: 150px;
-  width: 100%;
-  object-fit: cover;
-  object-position: top center;
-}
-
 .figure figcaption {
   font-size: 100%;
   font-weight: 400;
