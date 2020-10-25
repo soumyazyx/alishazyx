@@ -14,10 +14,10 @@
       </ol>
     </nav>
     <section class="">
-      <div class="container-fluid">
+      <div class="container-fluid mw-1000">
         <div class="row">
           {% for product_id, details in products_details.items %}
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-6">
               <a href="/{{categoryname}}/{{subcategoryname}}/{{product_id}}">
                 {% for image in details.images %}
                 <figure class="figure">

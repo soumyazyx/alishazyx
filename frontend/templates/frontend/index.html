@@ -13,10 +13,10 @@
       </ol>
     </nav>
     <section class="">
-      <div class="container-fluid" style="max-width:1500px">
+      <div class="container-fluid mw-1000">
         <div class="row">
           {% for category in categories %}
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-6">
               <a href="/{{category.name}}">
                 <figure class="figure">
                   <img data-src="{{category.transformed_url}}" class="lazyload img-fluid rounded" alt="{{category.name}}">

@@ -11,16 +11,17 @@ from hello.models import Category, SubCategory, Product, ProductImage
 
 def index(request):
     category_qs = Category.objects.all()
-    print(category_qs);
     for category in category_qs:
         transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_crop\2", category.image.url)
         category.transformed_url = transformed_image_url
-        
     return render(request, "frontend/index.html", {"categories": category_qs})
 
 
 def sub_category_view(request, categoryname):
     subcategories_qs = SubCategory.objects.filter(category__name=categoryname).order_by("sequence")
+    for subcat in subcategories_qs:
+        transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_crop\2", subcat.image.url)
+        subcat.transformed_url = transformed_image_url
     return render(
         request, "frontend/subcategory.html", {"subcategories": subcategories_qs, "category_name": categoryname},
     )
@@ -37,7 +38,9 @@ def products_view(request, categoryname, subcategoryname):
         products[product_id]["title"] = re.sub(r'^\W*', '', product.title)
         products[product_id]["description"] = product.description
         products[product_id]["images"] = []
-        products[product_id]["images"].append(product.coverimage.url)
+        # products[product_id]["images"].append(product.coverimage.url)
+        transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_fill,g_auto\2", product.coverimage.url)
+        products[product_id]["images"].append(transformed_image_url)
     return render(
         request,
         "frontend/products.html",

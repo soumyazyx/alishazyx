@@ -60,3 +60,6 @@ nav.fixed-top,
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
 }
+.mw-1000{
+  max-width: 1000px;
+}
