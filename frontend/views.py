@@ -14,11 +14,7 @@ def index(request):
     print(category_qs);
     for category in category_qs:
         transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_crop\2", category.image.url)
-        category.x = transformed_image_url
-        print(transformed_image_url)
-        print(category.image.url)
-        print(category)
-        print(category.x)
+        category.transformed_url = transformed_image_url
         
     return render(request, "frontend/index.html", {"categories": category_qs})
 
