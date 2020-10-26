@@ -1,9 +1,23 @@
+:root {
+  --gradient: linear-gradient(90deg, 
+    #e7f1ea, 
+    #dfe6eb, 
+    #ead3a8
+    );
+}
+@keyframes bg-animation {
+  0% {background-position: left}
+  50% {background-position: right}
+  100% {background-position: left}
+}
+
 @media (min-width: 600px) {
   /* desktop screen */
 }
 @media (max-width: 600px) {
   /* mobile screen */
 }
+
 
 body {
   font-family: "Prompt", sans-serif;
@@ -12,6 +26,10 @@ body {
   /* font-family: 'Roboto Slab', serif; */
   /* font-family: 'Baloo Tamma 2', cursive; */
   /* font-family: 'Open Sans', sans-serif; */
+  background: #ddd;
+  background-size: 300%;
+  background-image: var(--gradient);
+  animation: bg-animation 30s infinite;
 }
 dl,
 ol,
