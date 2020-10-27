@@ -1,5 +1,5 @@
 :root {
-  --gradient: linear-gradient(90deg, 
+  --gradient: linear-gradient(45deg, 
     #e7f1ea, 
     #dfe6eb, 
     #ead3a8
@@ -26,10 +26,10 @@ body {
   /* font-family: 'Roboto Slab', serif; */
   /* font-family: 'Baloo Tamma 2', cursive; */
   /* font-family: 'Open Sans', sans-serif; */
-  background: #ddd;
-  background-size: 300%;
-  background-image: var(--gradient);
-  animation: bg-animation 30s infinite;
+  background: #fbf7e3;
+  /* background-size: 300%; */
+  /* background-image: var(--gradient); */
+  /* animation: bg-animation 30s infinite; */
 }
 dl,
 ol,

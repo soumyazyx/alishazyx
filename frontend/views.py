@@ -12,7 +12,7 @@ from hello.models import Category, SubCategory, Product, ProductImage
 def index(request):
     category_qs = Category.objects.all()
     for category in category_qs:
-        transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_crop\2", category.image.url)
+        transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_fill,g_auto\2", category.image.url)
         category.transformed_url = transformed_image_url
     return render(request, "frontend/index.html", {"categories": category_qs})
 
@@ -20,7 +20,7 @@ def index(request):
 def sub_category_view(request, categoryname):
     subcategories_qs = SubCategory.objects.filter(category__name=categoryname).order_by("sequence")
     for subcat in subcategories_qs:
-        transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_crop\2", subcat.image.url)
+        transformed_image_url = re.sub(r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_1:1,c_fill,g_auto\2", subcat.image.url)
         subcat.transformed_url = transformed_image_url
     return render(
         request, "frontend/subcategory.html", {"subcategories": subcategories_qs, "category_name": categoryname},
@@ -191,7 +191,7 @@ def transform_url(original_url):
     # ar_3:4,c_pad,b_auto
     # h_520,w_440,c_pad,b_auto
     transformed_image_url = re.sub(
-        r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_3:4,c_pad\2", original_url
+        r"(https://res.cloudinary.com/hxjbk5wno/image/upload/)..(.*?)", r"\1ar_3:4,c_pad,b_auto\2", original_url
     )
     return transformed_image_url
 
