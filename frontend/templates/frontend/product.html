@@ -32,7 +32,8 @@
         padding: 0 !important;
       }
       .bg-product-footer {
-        background: #FBEBD8 !important;
+        /*background: #FBEBD8 !important;*/
+        background: #FFF !important;
       }
       .pd-title, .pd-title-mobile {
         color: #ff0087;
@@ -40,7 +41,7 @@
       }
       .pd-desc {
         max-width: 40ch;
-        line-height: 2rem;
+        
       }
       .carousel-control-next,
       .carousel-control-prev {
@@ -48,6 +49,10 @@
       }
       #carouselControls {
         box-shadow: 0 0 0 1px #eee;
+      }
+      .underline {
+        text-decoration: underline;
+        text-decoration-color: #ddd;
       }
       @media (min-width: 600px) {
         /* desktop screen */
@@ -76,7 +81,7 @@
     </nav>
     <!-- Product Shop Section Begin -->
     <section class="product-shop spad page-details">
-      <div class="container-fluid max-width-1k" style="max-width: 1000px;">
+      <div class="container-fluid mw-1000">
         <div class="row justify-content-center">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding:0">
             <div id="carouselControls" class="carousel slide" data-ride="carousel">
@@ -108,10 +113,11 @@
                 <a class="btn btn-sm btn-light btn-outline-success text-success" id="whatsapp_nonmobile" data-action="share/whatsapp/share">Share via whatsapp <i class="fa fa-inverse fa-whatsapp text-success"></i></a>
               </div>
               <br>
-              <b class="text-muted">Description</b>
+              <!-- <b class="text-muted">Description</b> -->
               <div class="pd-desc text-muted">
-                {{product_details.description|linebreaks|urlize}}
+                {{product_details.description|safe|urlize}}
               </div>
+
             </div>
           </div>
         </div>
@@ -119,7 +125,7 @@
     </section>
     <!-- Product Shop Section End -->
     <!-- sticky footer section begin -->
-    <br><br>
+    <br><br><br><br><br>
     <footer class="footer fixed-bottom bg-product-footer show_on_mobile" style="border-top: 10px solid white">
       <div class="container p-0 text-center">
         <div class="pd-title-mobile">
@@ -138,7 +144,7 @@
       // Handle carousel
       $('.carousel').carousel({
         wrap: false,
-        interval:false
+        interval:2000
       });      
       // Handle whatsapp share 
       // "share on whatsapp" works differently for mobile and non-mobile devices

@@ -1,9 +1,23 @@
+:root {
+  --gradient: linear-gradient(45deg, 
+    #e7f1ea, 
+    #dfe6eb, 
+    #ead3a8
+    );
+}
+@keyframes bg-animation {
+  0% {background-position: left}
+  50% {background-position: right}
+  100% {background-position: left}
+}
+
 @media (min-width: 600px) {
   /* desktop screen */
 }
 @media (max-width: 600px) {
   /* mobile screen */
 }
+
 
 body {
   font-family: "Prompt", sans-serif;
@@ -12,6 +26,10 @@ body {
   /* font-family: 'Roboto Slab', serif; */
   /* font-family: 'Baloo Tamma 2', cursive; */
   /* font-family: 'Open Sans', sans-serif; */
+  background: #fbf7e3;
+  /* background-size: 300%; */
+  /* background-image: var(--gradient); */
+  /* animation: bg-animation 30s infinite; */
 }
 dl,
 ol,
@@ -55,15 +73,11 @@ nav.fixed-top,
   color: unset;
 }
 
-.figure img {
-  height: 150px;
-  width: 100%;
-  object-fit: cover;
-  object-position: top center;
-}
-
 .figure figcaption {
   font-size: 100%;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
+}
+.mw-1000{
+  max-width: 1000px;
 }
